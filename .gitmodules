@@ -1,0 +1,3 @@
+[submodule "GeekyTheory.Toolkit"]
+	path = GeekyTheory.Toolkit
+	url = https://github.com/GeekyTheory/GeekyTheory.Toolkit.git
