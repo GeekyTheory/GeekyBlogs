@@ -105,35 +105,6 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-        private double variableSizedGrid_Heigth;
-        public double VariableSizedGrid_Heigth
-        {
-            get { return variableSizedGrid_Heigth; }
-            set
-            {
-                if (variableSizedGrid_Heigth != value)
-                {
-                    variableSizedGrid_Heigth = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-
-        private double viewHeight;
-        public double ViewHeight
-        {
-            get { return viewHeight; }
-            set
-            {
-                if (viewHeight != value)
-                {
-                    viewHeight = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
 
         private double viewWidth;
         public double ViewWidth

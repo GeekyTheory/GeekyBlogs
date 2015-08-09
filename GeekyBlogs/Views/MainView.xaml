@@ -14,18 +14,18 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="wideState">
-                    <VisualState.StateTriggers>
+                <VisualState x:Name="DesktopState">
+                    <!--<VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>
+                    </VisualState.StateTriggers>-->
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="CompactInline"/>
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="narrowState">
-                    <VisualState.StateTriggers>
+                <VisualState x:Name="OnehandState">
+                    <!--<VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
+                    </VisualState.StateTriggers>-->
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="Overlay"/>
                     </VisualState.Setters>

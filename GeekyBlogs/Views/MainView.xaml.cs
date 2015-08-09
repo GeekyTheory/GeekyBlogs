@@ -29,30 +29,37 @@ namespace GeekyBlogs.Views
         {
             if (e.PropertyName == "IsPaneOpen")
             {
-                GetCalculatedVariableSize(vm.ViewWidth, vm.ViewHeight);
+                GetCalculatedVariableSize(vm.ViewWidth);
             }
         }
 
         private void MainView_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
-            vm.ViewWidth = e.NewSize.Width;
-            vm.ViewHeight = e.NewSize.Height;
+            var state = "OnehandState";
+            if (e.NewSize.Width > 641)
+                state = "DesktopState";
 
-            GetCalculatedVariableSize(vm.ViewWidth, vm.ViewHeight);
+            VisualStateManager.GoToState(this, state, true);
+
+            vm.ViewWidth = e.NewSize.Width;
+            
+            GetCalculatedVariableSize(vm.ViewWidth);
             
         }
 
-        private void GetCalculatedVariableSize(double width, double heigth)
+        private void GetCalculatedVariableSize(double width)
         {
-            if (vm.IsPaneOpen)
+            if (vm.ViewWidth < 641)
+            {
+                vm.VariableSizedGrid_Width = width / 4;
+            }
+            else if (vm.IsPaneOpen)
             {
                 vm.VariableSizedGrid_Width = (width - 240)/4;
-                //vm.VariableSizedGrid_Heigth = (heigth - 240)/4;
             }
             else
             {
                 vm.VariableSizedGrid_Width = (width - 60)/4;
-                //vm.VariableSizedGrid_Heigth = (heigth - 60)/4;
             }
         }
     }
