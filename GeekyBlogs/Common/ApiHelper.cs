@@ -40,5 +40,14 @@ namespace GeekyBlogs.Common
 		    MessageDialog msg = new MessageDialog(content, title);
 		    await msg.ShowAsync();
 	    }
+
+        public static bool ValidFeedUri(string feedUri)
+        {
+            Uri uri;
+            if (!Uri.TryCreate(feedUri.Trim(), UriKind.Absolute, out uri))
+                return false;
+            else
+                return true;
+        }
     }
 }

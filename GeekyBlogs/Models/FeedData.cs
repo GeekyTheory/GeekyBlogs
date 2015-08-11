@@ -5,17 +5,17 @@ using GeekyBlogs.Services;
 
 namespace GeekyBlogs.Models
 {
-    public class FeedData
-    {
-        public string Title { get; set; }
+    //public class FeedData
+    //{
+    //    public string Title { get; set; }
 
-        private ObservableCollection<FeedItem> items = new ObservableCollection<FeedItem>();
-        public ObservableCollection<FeedItem> Items
-        {
-            get { return items; }
-            set { items = value; }
-        }
-    }
+    //    private ObservableCollection<FeedItem> items = new ObservableCollection<FeedItem>();
+    //    public ObservableCollection<FeedItem> Items
+    //    {
+    //        get { return items; }
+    //        set { items = value; }
+    //    }
+    //}
 
     public class FeedItem : IResizable
     {

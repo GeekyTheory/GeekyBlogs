@@ -1,131 +1,76 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
+using GeekyBlogs.Common;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
+using GeekyBlogs.ViewModels.Base;
 using GeekyTheory.Commands;
 using GeekyTheory.ViewModels;
 
 namespace GeekyBlogs.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBaseExtension
     {
         private readonly ILoadSplitterMenuService loadSplitterMenuService;
         private readonly IFeedManagerService feedManagerService;
+        
+        private List<FeedItem> feeds;
+        private FeedItem feed;
 
-        private bool isPaneOpen;
-        private ObservableCollection<MenuItem> menuItems;
-        private MenuItem menuItem;
-        private FeedData feeds;
-
-        public MainViewModel(ILoadSplitterMenuService loadSplitterMenuService, IFeedManagerService feedManagerService)
+        public MainViewModel(IFeedManagerService feedManagerService, ILoadSplitterMenuService loadSplitterMenuService)
         {
-            this.loadSplitterMenuService = loadSplitterMenuService;
             this.feedManagerService = feedManagerService;
+            this.loadSplitterMenuService = loadSplitterMenuService;
 
-            HamburgerCommand = new DelegateCommand(HamburgerCommandDelegate);
+            Feeds = new List<FeedItem>();
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
             MenuItems = loadSplitterMenuService.LoadMenu();
-            Feeds = await feedManagerService.GetFeedAsync(MenuItems[2].Url);
+
+            //foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+            //{
+            //    Feeds.AddRange(await feedManagerService.GetFeedAsync(item.Url));
+            //}
+
+            Feeds.AddRange(await feedManagerService.GetFeedAsync(MenuItems[2].Url));
+            //Feeds.AddRange(await feedManagerService.GetFeedAsync(MenuItems[3].Url));
         }
 
-        public bool IsPaneOpen
-        {
-            get { return isPaneOpen; }
-            set
-            {
-                if (isPaneOpen != value)
-                {
-                    isPaneOpen = value;
-                    OnPropertyChanged();
-
-                }
-            }
-        }
-
-        public ObservableCollection<MenuItem> MenuItems
-        {
-            get { return menuItems; }
-            set
-            {
-                if (menuItems != value)
-                {
-                    menuItems = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        
-        public MenuItem MenuItem
-        {
-            get { return menuItem; }
-            set
-            {
-                if (menuItem != value)
-                {
-                    menuItem = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        
-        public FeedData Feeds
+        public List<FeedItem> Feeds
         {
             get { return feeds; }
             set
             {
-                if (feeds != value)
-                {
-                    feeds = value;
-                    OnPropertyChanged();
-                }
+                feeds = value;
+                OnPropertyChanged();
             }
         }
 
-        private double variableSizedGrid_Width;
-        public double VariableSizedGrid_Width
+        public FeedItem Feed
         {
-            get { return variableSizedGrid_Width; }
+            get { return feed; }
             set
             {
-                if (variableSizedGrid_Width != value)
+                if (feed != value)
                 {
-                    variableSizedGrid_Width = value;
+                    feed = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-
-        private double viewWidth;
-        public double ViewWidth
-        {
-            get { return viewWidth; }
-            set
-            {
-                if (viewWidth != value)
-                {
-                    viewWidth = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-
-        public ICommand HamburgerCommand { get; private set; }
-
-        private void HamburgerCommandDelegate()
-        {
-            IsPaneOpen = !IsPaneOpen;
-        }
     }
 }

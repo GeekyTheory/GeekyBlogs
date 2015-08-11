@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using GeekyBlogs.Models;
+using GeekyBlogs.Views;
 
 namespace GeekyBlogs.Services
 {
@@ -30,6 +31,7 @@ namespace GeekyBlogs.Services
                 {
                     Icon = "ms-appx:///Assets/Icons/Dashboard.png",
                     Title = "Portada",
+                    View = typeof(MainView)
                 },
                 new MenuItem
                 {

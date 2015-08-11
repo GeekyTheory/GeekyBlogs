@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Web;
@@ -11,12 +12,12 @@ namespace GeekyBlogs.Services
 {
     public interface IFeedManagerService
     {
-        Task<FeedData> GetFeedAsync(string rssUri);
+        Task<List<FeedItem>> GetFeedAsync(string rssUri);
     }
 
     public class FeedManagerService : IFeedManagerService
     {
-        public async Task<FeedData> GetFeedAsync(string feedUri)
+        public async Task<List<FeedItem>> GetFeedAsync(string feedUri)
         {
             Uri uri;
             if (!Uri.TryCreate(feedUri.Trim(), UriKind.Absolute, out uri))
@@ -33,17 +34,17 @@ namespace GeekyBlogs.Services
 
             try
             {
-                FeedData feedData = new FeedData();
+                List<FeedItem> feedItems = new List<FeedItem>();
                 SyndicationFeed feed = await client.RetrieveFeedAsync(uri);
 
                 //rootPage.NotifyUser("Feed download complete.", NotifyType.StatusMessage);
 
-                ISyndicationText title = feed.Title;
-                feedData.Title = title != null ? title.Text : "(no title)";
+                //ISyndicationText title = feed.Title;
+                //feedData.Title = title != null ? title.Text : "(no title)";
                 
                 foreach (FeedItem feedItem in feed.Items.Select((item, i) => CreateFeedItem(item, feed.SourceFormat, i)))
                 {
-                    feedData.Items.Add(feedItem);
+                    feedItems.Add(feedItem);
                 }
 
                 //foreach (SyndicationItem item in feed.Items)
@@ -52,7 +53,7 @@ namespace GeekyBlogs.Services
                 //    feedData.Items.Add(feedItem);
                 //}
 
-                return feedData;
+                return feedItems;
             }
             catch (Exception ex)
             {

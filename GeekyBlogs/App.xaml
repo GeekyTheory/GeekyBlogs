@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GeekyBlogs"
     xmlns:converters="using:GeekyTheory.Converters"
+    xmlns:base="using:GeekyBlogs.ViewModels.Base"
+    xmlns:viewModels="using:GeekyBlogs.ViewModels"
     RequestedTheme="Light">
 
     <Application.Resources>
@@ -16,11 +18,12 @@
                     Required by Visual Studio project and item templates
                  -->
                 <ResourceDictionary Source="Styles/ListViewStyles.xaml"/>
+                <ResourceDictionary Source="Styles/GridViewStyles.xaml"></ResourceDictionary>
                 <!--<ResourceDictionary Source="ms-appx:///GeekyTheory (UWP)/Colors.xaml"/>-->
                 <!--<ResourceDictionary Source="/GeekyTheory;GeekyTheory/Colors.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
 
-            <local:ViewModelLocator x:Key="Locator"></local:ViewModelLocator>
+            <base:ViewModelLocator x:Key="Locator"></base:ViewModelLocator>
 
             <converters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BooleanToVisibilityConverter>
             <converters:BooleanToInverseVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></converters:BooleanToInverseVisibilityConverter>

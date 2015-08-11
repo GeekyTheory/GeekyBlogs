@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using GeekyBlogs.ViewModels;
 using GeekyTheory.ViewModels;
 
@@ -10,14 +9,16 @@ namespace GeekyBlogs.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainView : PageBase
+    public sealed partial class ShellView : PageBase
     {
-        public MainView()
+        public ShellView()
         {
             this.InitializeComponent();
 
-            this.SizeChanged += ((MainViewModel)this.DataContext).AppView_SizeChanged;
-        }
+            base.SplitViewFrame = SplitViewFrame;
             
+            this.SizeChanged += ((ShellViewModel)this.DataContext).AppView_SizeChanged;
+        }
+        
     }
 }

@@ -15,87 +15,44 @@
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="DesktopState">
-                    <!--<VisualState.StateTriggers>
+                    <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>-->
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="CompactInline"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="OnehandState">
-                    <!--<VisualState.StateTriggers>
+                    <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>-->
+                    </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="Overlay"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <SplitView x:Name="Splitter"
-                   DisplayMode="CompactInline"
-                   Background="White"
-                   PaneBackground="{StaticResource Gray900}"
-                   PanePlacement="Left"
-                   CompactPaneLength="60"
-                   OpenPaneLength="240"
-                   IsPaneOpen="{Binding IsPaneOpen}">
-            <SplitView.Pane>
-                <RelativePanel>
-                    <ListView
-                        ItemsSource="{Binding MenuItems}"
-                        SelectedItem="{Binding MenuItem, Mode=TwoWay}"
-                        ItemTemplate="{StaticResource MenuItemDataTemplate}"
-                        SelectionMode="Single"
-                        IsItemClickEnabled="False"
-                        Margin="0,50,0,0"></ListView>
-                </RelativePanel>
-            </SplitView.Pane>
-            <!--<Frame x:Name="SplitViewFrame" 
-				   Margin="0, 10" />-->
-            <!--<ListView x:Name="FeedListView"
-                ItemsSource="{Binding Feeds.Items}" 
-                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                ItemTemplate="{StaticResource FeedItemDataTemplate}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>-->
 
-            <controls:VariableGridView x:Name="VariableGridView"
+        <controls:VariableGridView x:Name="VariableGridView"
                 ItemsSource="{Binding Feeds.Items}"
-                SelectedItem="{Binding SelectedFeedItem, Mode=TwoWay}"
+                SelectedItem="{Binding Feed, Mode=TwoWay}"
                 ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
-                <GridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem">
-                        <Setter Property="HorizontalContentAlignment"
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment"
                                 Value="Stretch" />
-                        <Setter Property="VerticalContentAlignment"
+                    <Setter Property="VerticalContentAlignment"
                                 Value="Stretch" />
-                    </Style>
-                </GridView.ItemContainerStyle>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VariableSizedWrapGrid
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VariableSizedWrapGrid
                             Orientation="Horizontal"
                             ItemHeight="240"
                             ItemWidth="{Binding VariableSizedGrid_Width}"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </controls:VariableGridView>
-            
-        </SplitView>
-        <Grid Background="{StaticResource AndroidBlue}" Height="50" VerticalAlignment="Top">
-            <ToggleButton VerticalAlignment="Top" Command="{Binding HamburgerCommand}" Foreground="White">
-                <ToggleButton.Content>
-                    <Border Background="Transparent" Width="40" Height="40">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"></FontIcon>
-                    </Border>
-                </ToggleButton.Content>
-            </ToggleButton>
-        </Grid>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </controls:VariableGridView>
     </Grid>
 </viewModels:PageBase>

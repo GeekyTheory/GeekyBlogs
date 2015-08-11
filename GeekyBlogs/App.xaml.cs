@@ -36,12 +36,12 @@ namespace GeekyBlogs
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
-#if DEBUG
-            if (Debugger.IsAttached)
-            {
-                this.DebugSettings.EnableFrameRateCounter = true;
-            }
-#endif
+            //#if DEBUG
+            //            if (Debugger.IsAttached)
+            //            {
+            //                this.DebugSettings.EnableFrameRateCounter = true;
+            //            }
+            //#endif
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -68,7 +68,7 @@ namespace GeekyBlogs
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(MainView), e.Arguments);
+                rootFrame.Navigate(typeof(ShellView), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();
