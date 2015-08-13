@@ -59,18 +59,7 @@ namespace GeekyBlogs.ViewModels.Base
 
         public void GetCalculatedVariableSize(double width)
         {
-            if (ViewWidth < 641)
-            {
-                VariableSizedGrid_Width = width / 4;
-            }
-            else if (IsPaneOpen)
-            {
-                VariableSizedGrid_Width = (width - 60) / 4;
-            }
-            else
-            {
-                VariableSizedGrid_Width = (width - 60) / 4;
-            }
+            VariableSizedGrid_Width = width / 4;
         }
 
         public void AppView_SizeChanged(object sender, SizeChangedEventArgs e)

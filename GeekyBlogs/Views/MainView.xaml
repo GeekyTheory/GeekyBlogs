@@ -34,7 +34,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <controls:VariableGridView x:Name="VariableGridView"
-                ItemsSource="{Binding Feeds.Items}"
+                ItemsSource="{Binding Feeds}"
                 SelectedItem="{Binding Feed, Mode=TwoWay}"
                 ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
             <GridView.ItemContainerStyle>

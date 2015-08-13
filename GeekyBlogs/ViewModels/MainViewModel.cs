@@ -11,6 +11,7 @@ using GeekyBlogs.Models;
 using GeekyBlogs.Services;
 using GeekyBlogs.ViewModels.Base;
 using GeekyTheory.Commands;
+using GeekyTheory.Extensions;
 using GeekyTheory.ViewModels;
 
 namespace GeekyBlogs.ViewModels
@@ -20,7 +21,7 @@ namespace GeekyBlogs.ViewModels
         private readonly ILoadSplitterMenuService loadSplitterMenuService;
         private readonly IFeedManagerService feedManagerService;
         
-        private List<FeedItem> feeds;
+        private ObservableCollection<FeedItem> feeds;
         private FeedItem feed;
 
         public MainViewModel(IFeedManagerService feedManagerService, ILoadSplitterMenuService loadSplitterMenuService)
@@ -28,7 +29,7 @@ namespace GeekyBlogs.ViewModels
             this.feedManagerService = feedManagerService;
             this.loadSplitterMenuService = loadSplitterMenuService;
 
-            Feeds = new List<FeedItem>();
+            Feeds = new ObservableCollection<FeedItem>();
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
@@ -40,16 +41,16 @@ namespace GeekyBlogs.ViewModels
         {
             MenuItems = loadSplitterMenuService.LoadMenu();
 
-            //foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
-            //{
-            //    Feeds.AddRange(await feedManagerService.GetFeedAsync(item.Url));
-            //}
-
-            Feeds.AddRange(await feedManagerService.GetFeedAsync(MenuItems[2].Url));
-            //Feeds.AddRange(await feedManagerService.GetFeedAsync(MenuItems[3].Url));
+            var tempList = new List<FeedItem>();
+            foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+            {
+                tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
+            }
+            Feeds = tempList.ToObservableCollection();
         }
 
-        public List<FeedItem> Feeds
+
+        public ObservableCollection<FeedItem> Feeds
         {
             get { return feeds; }
             set

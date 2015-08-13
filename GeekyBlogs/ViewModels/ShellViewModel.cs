@@ -26,7 +26,7 @@ namespace GeekyBlogs.ViewModels
             OpenPaneCommand = new DelegateCommand(OpenPaneCommandDelegate);
             PerformNavigationCommand = new DelegateCommand<MenuItem>(PerformNavigationCommandDelegate, null);
         }
-        
+
         public override Task OnNavigatedFrom(NavigationEventArgs e)
         {
             return null;
@@ -38,7 +38,7 @@ namespace GeekyBlogs.ViewModels
 
             return Task.FromResult(true);
         }
-        
+
         public ICommand OpenPaneCommand { get; private set; }
 
         private void OpenPaneCommandDelegate()

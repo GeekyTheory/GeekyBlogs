@@ -43,6 +43,9 @@ namespace GeekyBlogs.Common
 
         public static bool ValidFeedUri(string feedUri)
         {
+            if (string.IsNullOrEmpty(feedUri))
+                return false;
+
             Uri uri;
             if (!Uri.TryCreate(feedUri.Trim(), UriKind.Absolute, out uri))
                 return false;
