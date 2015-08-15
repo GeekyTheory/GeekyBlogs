@@ -50,13 +50,6 @@
                         SelectionMode="Single"
                         IsItemClickEnabled="False"
                         Margin="0,50,0,0">
-                        <interactivity:Interaction.Behaviors>
-                            <interactivity:BehaviorCollection>
-                                <core:EventTriggerBehavior EventName="SelectionChanged">
-                                    <core:InvokeCommandAction Command="{Binding PerformNavigationCommand}" CommandParameter="{Binding MenuItem}" />
-                                </core:EventTriggerBehavior>
-                            </interactivity:BehaviorCollection>
-                        </interactivity:Interaction.Behaviors>
                     </ListView>
                 </RelativePanel>
             </SplitView.Pane>

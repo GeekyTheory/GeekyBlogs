@@ -33,14 +33,16 @@ namespace GeekyBlogs.Services
                     Icon = "ms-appx:///Assets/Geeky/geeky_theory_icon_round.png",
                     Title = "Geeky Theory",
                     Brush = (SolidColorBrush)Application.Current.Resources["GeekyTheoryColor"],
-                    Url = "http://geekytheory.com/feed/"
+                    Url = "http://geekytheory.com/feed/",
+                    View = typeof(MainView)
                 },
                 new MenuItem
                 {
                     Icon = "ms-appx:///Assets/Geeky/geeky_juegos_icon_round.png",
                     Title = "Geeky Juegos",
                     Brush = (SolidColorBrush)Application.Current.Resources["GeekyJuegosColor"],
-                    Url = "http://geekyjuegos.com/feed/"
+                    Url = "http://geekyjuegos.com/feed/",
+                    View = typeof(MainView)
                 },
                 new MenuItem
                 {

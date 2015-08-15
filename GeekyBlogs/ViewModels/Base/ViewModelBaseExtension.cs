@@ -3,6 +3,7 @@ using Windows.Foundation.Metadata;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using GeekyBlogs.Models;
+using GeekyBlogs.Views;
 using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels.Base
@@ -49,6 +50,7 @@ namespace GeekyBlogs.ViewModels.Base
                 {
                     menuItem = value;
                     OnPropertyChanged();
+                    PerformNavigationCommandDelegate(menuItem);
                     menuItem = null;
                 }
             }
@@ -100,6 +102,22 @@ namespace GeekyBlogs.ViewModels.Base
                 SplitViewFrame.GoBack();
                 e.Handled = true;
             }
+        }
+
+        public void PerformNavigationCommandDelegate(MenuItem item)
+        {
+            if (item.View == null)
+                return;
+
+            if (item.View == typeof(MainView))
+            {
+                while (SplitViewFrame.CanGoBack)
+                {
+                    SplitViewFrame.GoBack();
+                }
+            }
+            SplitViewFrame.Navigate(item.View, item);
+
         }
     }
 }

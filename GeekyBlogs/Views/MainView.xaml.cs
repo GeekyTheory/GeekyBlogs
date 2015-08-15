@@ -1,4 +1,5 @@
-﻿using GeekyBlogs.ViewModels;
+﻿using Windows.UI.Xaml.Navigation;
+using GeekyBlogs.ViewModels;
 using GeekyTool;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -13,6 +14,8 @@ namespace GeekyBlogs.Views
         public MainView()
         {
             this.InitializeComponent();
+
+            this.NavigationCacheMode = NavigationCacheMode.Enabled;
 
             this.SizeChanged += ((MainViewModel)this.DataContext).AppView_SizeChanged;
         }

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Syndication;
 using GeekyBlogs.Common;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
@@ -42,12 +43,39 @@ namespace GeekyBlogs.ViewModels
 
             MenuItems = loadSplitterMenuService.LoadMenu();
 
-            var tempList = new List<FeedItem>();
-            foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+            if (e.NavigationMode != NavigationMode.Back)
             {
-                tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
+                if (e.Parameter is MenuItem)
+                {
+                    var menuItem = (MenuItem) e.Parameter;
+
+                    if (menuItem.Title == "Geeky Theory")
+                    {
+                        Feeds = (await feedManagerService.GetFeedAsync(menuItem.Url)).ToObservableCollection();
+                    }
+                    else if (menuItem.Title == "Geeky Juegos")
+                    {
+                        Feeds = (await feedManagerService.GetFeedAsync(menuItem.Url)).ToObservableCollection();
+                    }
+                    else if(menuItem.View == typeof(MainView))
+                    {
+                        var tempList = new List<FeedItem>();
+                        foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+                        {
+                            tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
+                        }
+                        tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                        tempList.ForEach(x =>
+                        {
+                            x.ColSpan = 1;
+                            x.RowSpan = 1;
+                        });
+                        tempList[0].ColSpan = 2; tempList[0].RowSpan = 2;
+                        tempList[1].ColSpan = 2; tempList[1].RowSpan = 2;
+                        Feeds = tempList.ToObservableCollection();
+                    }
+                }
             }
-            Feeds = tempList.ToObservableCollection();
         }
 
 
