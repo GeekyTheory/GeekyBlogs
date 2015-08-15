@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI.Core;
+using Windows.UI.Xaml;
 using GeekyBlogs.ViewModels;
 using GeekyTheory.ViewModels;
 
@@ -16,7 +17,7 @@ namespace GeekyBlogs.Views
             this.InitializeComponent();
 
             base.SplitViewFrame = SplitViewFrame;
-            
+
             this.SizeChanged += ((ShellViewModel)this.DataContext).AppView_SizeChanged;
         }
         

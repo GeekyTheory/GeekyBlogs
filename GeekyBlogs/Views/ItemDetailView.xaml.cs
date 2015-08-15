@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using GeekyBlogs.ViewModels;
+﻿using GeekyBlogs.ViewModels;
 using GeekyTheory.ViewModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -12,14 +8,13 @@ namespace GeekyBlogs.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainView : PageBase
+    public sealed partial class ItemDetailView : PageBase
     {
-        public MainView()
+        public ItemDetailView()
         {
             this.InitializeComponent();
 
-            this.SizeChanged += ((MainViewModel)this.DataContext).AppView_SizeChanged;
+            this.SizeChanged += ((ItemDetailViewModel)this.DataContext).AppView_SizeChanged;
         }
-            
     }
 }

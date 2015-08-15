@@ -4,7 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
 using GeekyTheory.ViewModels;
@@ -53,6 +56,7 @@ namespace GeekyBlogs.ViewModels.Base
                 {
                     menuItem = value;
                     OnPropertyChanged();
+                    menuItem = null;
                 }
             }
         }
@@ -68,6 +72,41 @@ namespace GeekyBlogs.ViewModels.Base
 
             GetCalculatedVariableSize(ViewWidth);
 
+        }
+
+        public void SetVisibilityOfNavigationBack()
+        {
+            var currentView = SystemNavigationManager.GetForCurrentView();
+
+            if (!ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            {
+                if (AppFrame != null && AppFrame.CanGoBack)
+                {
+                    currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                }
+                else if (SplitViewFrame != null && SplitViewFrame.CanGoBack)
+                {
+                    currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                }
+                else
+                {
+                    currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                }
+            }
+        }
+
+        public void SystemNavigationManager_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (AppFrame != null && AppFrame.CanGoBack)
+            {
+                AppFrame.GoBack();
+                e.Handled = true;
+            }
+            else if (SplitViewFrame != null && SplitViewFrame.CanGoBack)
+            {
+                SplitViewFrame.GoBack();
+                e.Handled = true;
+            }
         }
     }
 }

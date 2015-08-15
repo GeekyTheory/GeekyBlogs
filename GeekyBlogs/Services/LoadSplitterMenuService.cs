@@ -24,11 +24,6 @@ namespace GeekyBlogs.Services
             {
                 new MenuItem
                 {
-                    Icon = "ms-appx:///Assets/Icons/Back.png",
-                    Title = "Atrás",
-                },
-                new MenuItem
-                {
                     Icon = "ms-appx:///Assets/Icons/Dashboard.png",
                     Title = "Portada",
                     View = typeof(MainView)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
@@ -22,6 +23,9 @@ namespace GeekyBlogs.ViewModels
         public ShellViewModel(ILoadSplitterMenuService loadSplitterMenuService)
         {
             this.loadSplitterMenuService = loadSplitterMenuService;
+
+            SetVisibilityOfNavigationBack();
+            SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManager_BackRequested;
 
             OpenPaneCommand = new DelegateCommand(OpenPaneCommandDelegate);
             PerformNavigationCommand = new DelegateCommand<MenuItem>(PerformNavigationCommandDelegate, null);
@@ -61,6 +65,7 @@ namespace GeekyBlogs.ViewModels
                 }
             }
             SplitViewFrame.Navigate(item.View);
+
         }
     }
 }

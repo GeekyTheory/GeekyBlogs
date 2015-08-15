@@ -10,8 +10,10 @@ using GeekyBlogs.Common;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
 using GeekyBlogs.ViewModels.Base;
+using GeekyBlogs.Views;
 using GeekyTheory.Commands;
 using GeekyTheory.Extensions;
+using GeekyTheory.Services;
 using GeekyTheory.ViewModels;
 
 namespace GeekyBlogs.ViewModels
@@ -20,14 +22,16 @@ namespace GeekyBlogs.ViewModels
     {
         private readonly ILoadSplitterMenuService loadSplitterMenuService;
         private readonly IFeedManagerService feedManagerService;
+        private readonly INavigationService navigationService;
         
         private ObservableCollection<FeedItem> feeds;
         private FeedItem feed;
 
-        public MainViewModel(IFeedManagerService feedManagerService, ILoadSplitterMenuService loadSplitterMenuService)
+        public MainViewModel(IFeedManagerService feedManagerService, ILoadSplitterMenuService loadSplitterMenuService, INavigationService navigationService)
         {
             this.feedManagerService = feedManagerService;
             this.loadSplitterMenuService = loadSplitterMenuService;
+            this.navigationService = navigationService;
 
             Feeds = new ObservableCollection<FeedItem>();
         }
@@ -39,6 +43,8 @@ namespace GeekyBlogs.ViewModels
 
         public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
+            SetVisibilityOfNavigationBack();
+
             MenuItems = loadSplitterMenuService.LoadMenu();
 
             var tempList = new List<FeedItem>();
@@ -69,9 +75,10 @@ namespace GeekyBlogs.ViewModels
                 {
                     feed = value;
                     OnPropertyChanged();
+                    AppFrame.Navigate(typeof(ItemDetailView), Feed);
+                    feed = null;
                 }
             }
         }
-
     }
 }

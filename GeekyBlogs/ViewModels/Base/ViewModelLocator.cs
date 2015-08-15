@@ -21,11 +21,13 @@ namespace GeekyBlogs.ViewModels.Base
             // ViewModels
             builder.RegisterType<ShellViewModel>();
             builder.RegisterType<MainViewModel>();
+            builder.RegisterType<ItemDetailViewModel>();
 
             container = builder.Build();
         }
 
         public ShellViewModel ShellViewModel { get { return container.Resolve<ShellViewModel>(); } }
         public MainViewModel MainViewModel { get { return container.Resolve<MainViewModel>(); } }
+        public ItemDetailViewModel ItemDetailViewModel { get { return container.Resolve<ItemDetailViewModel>(); } }
     }
 }
