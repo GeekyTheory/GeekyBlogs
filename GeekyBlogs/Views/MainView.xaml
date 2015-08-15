@@ -1,4 +1,4 @@
-﻿<viewModels:PageBase
+﻿<geekyTool:PageBase
     x:Name="PageBase"
     x:Class="GeekyBlogs.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,8 +6,9 @@
     xmlns:local="using:GeekyBlogs.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:GeekyTheory.ViewModels"
+    xmlns:viewModels="using:GeekyTool.ViewModels"
     xmlns:controls="using:GeekyBlogs.Controls"
+    xmlns:geekyTool="using:GeekyTool"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
@@ -55,4 +56,4 @@
             </GridView.ItemsPanel>
         </controls:VariableGridView>
     </Grid>
-</viewModels:PageBase>
+</geekyTool:PageBase>

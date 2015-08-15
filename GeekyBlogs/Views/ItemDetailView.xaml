@@ -1,12 +1,13 @@
-﻿<viewModels:PageBase
+﻿<geekyTool:PageBase
     x:Class="GeekyBlogs.Views.ItemDetailView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GeekyBlogs.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:GeekyTheory.ViewModels"
-    xmlns:extensions="using:GeekyTheory.Extensions"
+    xmlns:viewModels="using:GeekyTool.ViewModels"
+    xmlns:extensions="using:GeekyTool.Extensions"
+    xmlns:geekyTool="using:GeekyTool"
     DataContext="{Binding ItemDetailViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
@@ -33,4 +34,4 @@
         </VisualStateManager.VisualStateGroups>
         <WebView extensions:WebViewExtension.Html="{Binding Feed.Content}"/>
     </Grid>
-</viewModels:PageBase>
+</geekyTool:PageBase>

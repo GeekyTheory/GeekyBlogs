@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using GeekyBlogs.Services;
-using GeekyTheory.Services;
+using GeekyTool.Services;
 
 namespace GeekyBlogs.ViewModels.Base
 {

@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GeekyBlogs"
-    xmlns:converters="using:GeekyTheory.Converters"
+    xmlns:converters="using:GeekyTool.Converters"
     xmlns:base="using:GeekyBlogs.ViewModels.Base"
     xmlns:viewModels="using:GeekyBlogs.ViewModels"
     RequestedTheme="Light">

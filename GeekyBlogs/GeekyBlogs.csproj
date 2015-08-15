@@ -180,12 +180,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeekyTheory.Toolkit\GeekyTheory %28UWP%29\GeekyTheory %28UWP%29.csproj">
-      <Project>{9fb3ceff-3e11-498d-9864-9656c0559b69}</Project>
-      <Name>GeekyTheory %28UWP%29</Name>
+    <ProjectReference Include="..\GeekyTool\GeekyTool\GeekyTool.csproj">
+      <Project>{50b0c666-6c62-4b70-b039-a917231e964c}</Project>
+      <Name>GeekyTool</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
