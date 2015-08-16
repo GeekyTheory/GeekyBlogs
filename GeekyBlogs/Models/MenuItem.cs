@@ -10,7 +10,7 @@ namespace GeekyBlogs.Models
         public string Title { get; set; }
         public Type View { get; set; }
         public ICommand Command { get; set; }
-        public SolidColorBrush Brush { get; set; }
+        public string Brush { get; set; }
         public string Url { get; set; }
     }
 }

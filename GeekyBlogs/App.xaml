@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GeekyBlogs"
-    xmlns:converters="using:GeekyTool.Converters"
+    xmlns:geekyConverters="using:GeekyTool.Converters"
     xmlns:base="using:GeekyBlogs.ViewModels.Base"
     xmlns:viewModels="using:GeekyBlogs.ViewModels"
     RequestedTheme="Light">
@@ -25,9 +25,10 @@
 
             <base:ViewModelLocator x:Key="Locator"></base:ViewModelLocator>
 
-            <converters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BooleanToVisibilityConverter>
-            <converters:BooleanToInverseVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></converters:BooleanToInverseVisibilityConverter>
-            <converters:ToUpperConverter x:Key="ToUpperConverter"></converters:ToUpperConverter>
+            <geekyConverters:StringToColorConverter x:Key="StringToColorConverter"></geekyConverters:StringToColorConverter>
+            <geekyConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></geekyConverters:BooleanToVisibilityConverter>
+            <geekyConverters:BooleanToInverseVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></geekyConverters:BooleanToInverseVisibilityConverter>
+            <geekyConverters:ToUpperConverter x:Key="ToUpperConverter"></geekyConverters:ToUpperConverter>
 
             <SolidColorBrush x:Key="GeekyBackGround" Color="#F0F0F0"></SolidColorBrush>
             <SolidColorBrush x:Key="GeekyTheoryColor" Color="#1ABB9C"></SolidColorBrush>

@@ -13,9 +13,9 @@
             <Border 
 				Grid.Column="0"
 				Background="Transparent" 
-			    Width="40" 
-				Height="40">
-                <Image Height="30" Source="{Binding Icon}" HorizontalAlignment="Center" />
+			    Width="28" 
+				Height="28">
+                <Image Height="18" Source="{Binding Icon}" HorizontalAlignment="Center" />
                 <!--<FontIcon 
 					FontFamily="Segoe MDL2 Assets" 
 					Foreground="White"
@@ -26,7 +26,7 @@
 				Text="{Binding Title}"
 				Foreground="White"
 				VerticalAlignment="Center"
-				Margin="10, 0" />
+				Margin="8, 0" />
         </Grid>
     </DataTemplate>
 

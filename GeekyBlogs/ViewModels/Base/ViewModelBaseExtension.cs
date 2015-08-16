@@ -46,13 +46,9 @@ namespace GeekyBlogs.ViewModels.Base
             get { return menuItem; }
             set
             {
-                if (menuItem != value)
-                {
-                    menuItem = value;
-                    OnPropertyChanged();
-                    PerformNavigationCommandDelegate(menuItem);
-                    menuItem = null;
-                }
+                menuItem = value;
+                OnPropertyChanged();
+                PerformNavigationCommandDelegate(menuItem);
             }
         }
 

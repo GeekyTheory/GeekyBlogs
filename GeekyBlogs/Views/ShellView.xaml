@@ -10,7 +10,12 @@
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:geekyTool="using:GeekyTool"
+    xmlns:helpers="using:GeekyTool.Helpers"
     DataContext="{Binding ShellViewModel, Source={StaticResource Locator}}"
+    helpers:TitleBar.BackgroundColor="{Binding MenuItem.Brush, Converter={StaticResource StringToColorConverter}}"
+    helpers:TitleBar.ForegroundColor="White"
+    helpers:TitleBar.ButtonBackgroundColor="{Binding MenuItem.Brush, Converter={StaticResource StringToColorConverter}}"
+    helpers:TitleBar.ButtonForegroundColor="White"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -35,11 +40,11 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <SplitView x:Name="Splitter"
-                   CompactPaneLength="60"
-                   OpenPaneLength="240"
+                   CompactPaneLength="48"
+                   OpenPaneLength="170"
                    DisplayMode="CompactOverlay"
                    Background="White"
-                   PaneBackground="{StaticResource Gray900}"
+                   PaneBackground="{Binding MenuItem.Brush}"
                    IsPaneOpen="{Binding IsPaneOpen}">
             <SplitView.Pane>
                 <RelativePanel>
@@ -70,10 +75,10 @@
                 </Grid>
             </SplitView.Content>
         </SplitView>
-        <Grid Background="{StaticResource AndroidBlue}" Height="50" VerticalAlignment="Top">
-            <ToggleButton VerticalAlignment="Top" Command="{Binding OpenPaneCommand}" Foreground="White">
+        <Grid Background="{Binding MenuItem.Brush}" Height="38" VerticalAlignment="Top">
+            <ToggleButton Background="{Binding MenuItem.Brush}" VerticalAlignment="Top" Command="{Binding OpenPaneCommand}" Foreground="White">
                 <ToggleButton.Content>
-                    <Border Background="Transparent" Width="40" Height="40">
+                    <Border Background="Transparent" Width="28" Height="28">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"></FontIcon>
                     </Border>
                 </ToggleButton.Content>

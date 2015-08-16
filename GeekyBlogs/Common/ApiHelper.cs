@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Media;
 using Windows.Web.Syndication;
 
 namespace GeekyBlogs.Common
@@ -14,7 +16,7 @@ namespace GeekyBlogs.Common
             string matchString = Regex.Match(content, "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase).Groups[1].Value;
             return matchString;
         }
-
+        
         public static string GetCustomFormattedDate(DateTime date)
         {
             var now = DateTime.Now;
