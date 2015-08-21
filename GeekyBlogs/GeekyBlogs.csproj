@@ -100,14 +100,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\ApiHelper.cs" />
-    <Compile Include="Controls\VariableGridView.cs" />
     <Compile Include="Models\FeedData.cs" />
-    <Compile Include="Models\IMenuItem.cs" />
-    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FeedManagerService.cs" />
-    <Compile Include="Services\IResizable.cs" />
-    <Compile Include="Services\LoadSplitterMenuService.cs" />
     <Compile Include="ViewModels\Base\ViewModelBaseExtension.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ItemDetailViewModel.cs" />

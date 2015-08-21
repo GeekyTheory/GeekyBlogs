@@ -7,12 +7,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:GeekyTool.ViewModels"
-    xmlns:controls="using:GeekyBlogs.Controls"
     xmlns:geekyTool="using:GeekyTool"
+    xmlns:geekyControls="using:GeekyTool.Controls"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Margin="0,38,0,0" Background="{StaticResource Gray300}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="DesktopState">
@@ -34,26 +34,28 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <controls:VariableGridView x:Name="VariableGridView"
-                ItemsSource="{Binding Feeds}"
-                SelectedItem="{Binding Feed, Mode=TwoWay}"
-                ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
+        <geekyControls:VariableGridView x:Name="VariableGridView"
+                                   Background="{StaticResource Gray300}"
+                                   ItemsSource="{Binding Feeds}"
+                                   SelectedItem="{Binding Feed, Mode=TwoWay}"
+                                   ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
                     <Setter Property="HorizontalContentAlignment"
-                                Value="Stretch" />
+                            Value="Stretch" />
                     <Setter Property="VerticalContentAlignment"
-                                Value="Stretch" />
+                            Value="Stretch" />
                 </Style>
             </GridView.ItemContainerStyle>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VariableSizedWrapGrid
-                            Orientation="Horizontal"
-                            ItemHeight="240"
-                            ItemWidth="{Binding VariableSizedGrid_Width}"/>
+                        Background="{StaticResource Gray300}"
+                        Orientation="Horizontal"
+                        ItemHeight="240"
+                        ItemWidth="{Binding VariableSizedGrid_Width}" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-        </controls:VariableGridView>
+        </geekyControls:VariableGridView>
     </Grid>
 </geekyTool:PageBase>

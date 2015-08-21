@@ -16,7 +16,6 @@ namespace GeekyBlogs.ViewModels.Base
             builder.RegisterType<NavigationService>().As<INavigationService>();
             builder.RegisterType<LocalSettingsService>().As<ILocalSettingsService>();
             builder.RegisterType<FeedManagerService>().As<IFeedManagerService>();
-            builder.RegisterType<LoadSplitterMenuService>().As<ILoadSplitterMenuService>();
 
             // ViewModels
             builder.RegisterType<ShellViewModel>();

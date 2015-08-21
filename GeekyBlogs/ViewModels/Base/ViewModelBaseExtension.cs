@@ -8,50 +8,8 @@ using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels.Base
 {
-    public abstract class ViewModelBaseExtension : ViewModelBase
+    public abstract class ViewModelBaseExtension : SplitterViewModelBase
     {
-        private bool isPaneOpen;
-        private ObservableCollection<MenuItem> menuItems;
-        private MenuItem menuItem;
-
-        public bool IsPaneOpen
-        {
-            get { return isPaneOpen; }
-            set
-            {
-                if (isPaneOpen != value)
-                {
-                    isPaneOpen = value;
-                    OnPropertyChanged();
-                    GetCalculatedVariableSize(ViewWidth);
-                }
-            }
-        }
-
-        public ObservableCollection<MenuItem> MenuItems
-        {
-            get { return menuItems; }
-            set
-            {
-                if (menuItems != value)
-                {
-                    menuItems = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public MenuItem MenuItem
-        {
-            get { return menuItem; }
-            set
-            {
-                menuItem = value;
-                OnPropertyChanged();
-                PerformNavigationCommandDelegate(menuItem);
-            }
-        }
-
         public void GetCalculatedVariableSize(double width)
         {
             VariableSizedGrid_Width = width / 4;
@@ -98,22 +56,6 @@ namespace GeekyBlogs.ViewModels.Base
                 SplitViewFrame.GoBack();
                 e.Handled = true;
             }
-        }
-
-        public void PerformNavigationCommandDelegate(MenuItem item)
-        {
-            if (item.View == null)
-                return;
-
-            if (item.View == typeof(MainView))
-            {
-                while (SplitViewFrame.CanGoBack)
-                {
-                    SplitViewFrame.GoBack();
-                }
-            }
-            SplitViewFrame.Navigate(item.View, item);
-
         }
     }
 }

@@ -9,6 +9,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
 using GeekyBlogs.ViewModels.Base;
+using GeekyBlogs.Views;
+using MenuItem = GeekyTool.Models.MenuItem;
 
 namespace GeekyBlogs.ViewModels
 {
@@ -52,6 +54,19 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
+        protected override void PerformNavigationCommandDelegate(MenuItem item)
+        {
+            if (item.View == null)
+                return;
 
+            if (item.View == typeof(MainView))
+            {
+                while (SplitViewFrame.CanGoBack)
+                {
+                    SplitViewFrame.GoBack();
+                }
+            }
+            SplitViewFrame.Navigate(item.View, item);
+        }
     }
 }

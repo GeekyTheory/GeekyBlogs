@@ -10,23 +10,23 @@ using GeekyBlogs.Services;
 using GeekyBlogs.ViewModels.Base;
 using GeekyBlogs.Views;
 using GeekyTool.Extensions;
+using GeekyTool.Models;
 using GeekyTool.Services;
+using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels
 {
     public class MainViewModel : ViewModelBaseExtension
     {
-        private readonly ILoadSplitterMenuService loadSplitterMenuService;
         private readonly IFeedManagerService feedManagerService;
         private readonly INavigationService navigationService;
         
         private ObservableCollection<FeedItem> feeds;
         private FeedItem feed;
 
-        public MainViewModel(IFeedManagerService feedManagerService, ILoadSplitterMenuService loadSplitterMenuService, INavigationService navigationService)
+        public MainViewModel(IFeedManagerService feedManagerService, INavigationService navigationService)
         {
             this.feedManagerService = feedManagerService;
-            this.loadSplitterMenuService = loadSplitterMenuService;
             this.navigationService = navigationService;
 
             Feeds = new ObservableCollection<FeedItem>();
@@ -40,8 +40,6 @@ namespace GeekyBlogs.ViewModels
         public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
             SetVisibilityOfNavigationBack();
-
-            MenuItems = loadSplitterMenuService.LoadMenu();
 
             if (e.NavigationMode != NavigationMode.Back)
             {
@@ -60,7 +58,7 @@ namespace GeekyBlogs.ViewModels
                     else if(menuItem.View == typeof(MainView))
                     {
                         var tempList = new List<FeedItem>();
-                        foreach (var item in MenuItems.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+                        foreach (var item in GeekyTool.MenuItems.instance.Items.Where(item => ApiHelper.ValidFeedUri(item.Url)))
                         {
                             tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
                         }
@@ -102,6 +100,21 @@ namespace GeekyBlogs.ViewModels
                     feed = null;
                 }
             }
+        }
+
+        protected override void PerformNavigationCommandDelegate(GeekyTool.Models.MenuItem item)
+        {
+            if (item.View == null)
+                return;
+
+            if (item.View == typeof(MainView))
+            {
+                while (SplitViewFrame.CanGoBack)
+                {
+                    SplitViewFrame.GoBack();
+                }
+            }
+            SplitViewFrame.Navigate(item.View, item);
         }
     }
 }
