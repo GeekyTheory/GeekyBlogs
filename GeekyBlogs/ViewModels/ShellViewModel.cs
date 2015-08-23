@@ -66,9 +66,11 @@ namespace GeekyBlogs.ViewModels
                 }
             };
 
-            SplitterMenuService.AddItems(GeekyTool.MenuItems.instance.Items);
-
+            //SplitterMenuService.AddItems(GeekyTool.MenuItems.instance.Items);
+            
             MenuItem = MenuItems.FirstOrDefault(x => x.View == typeof (MainView));
+
+            //GeekyTool.MenuItems.instance.Items.Remove(MenuItem);
 
             return Task.FromResult(true);
         }

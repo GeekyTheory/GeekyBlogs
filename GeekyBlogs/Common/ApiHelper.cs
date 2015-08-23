@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,12 +12,6 @@ namespace GeekyBlogs.Common
 {
     public class ApiHelper
     {
-        public static string ExtractFirstImageFromHtml(string content)
-        {
-            string matchString = Regex.Match(content, "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase).Groups[1].Value;
-            return matchString;
-        }
-        
         public static string GetCustomFormattedDate(DateTime date)
         {
             var now = DateTime.Now;
@@ -42,17 +37,5 @@ namespace GeekyBlogs.Common
 		    MessageDialog msg = new MessageDialog(content, title);
 		    await msg.ShowAsync();
 	    }
-
-        public static bool ValidFeedUri(string feedUri)
-        {
-            if (string.IsNullOrEmpty(feedUri))
-                return false;
-
-            Uri uri;
-            if (!Uri.TryCreate(feedUri.Trim(), UriKind.Absolute, out uri))
-                return false;
-            else
-                return true;
-        }
     }
 }

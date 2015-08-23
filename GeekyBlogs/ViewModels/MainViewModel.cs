@@ -9,6 +9,7 @@ using GeekyBlogs.Models;
 using GeekyBlogs.Services;
 using GeekyBlogs.ViewModels.Base;
 using GeekyBlogs.Views;
+using GeekyTool;
 using GeekyTool.Extensions;
 using GeekyTool.Models;
 using GeekyTool.Services;
@@ -58,7 +59,7 @@ namespace GeekyBlogs.ViewModels
                     else if(menuItem.View == typeof(MainView))
                     {
                         var tempList = new List<FeedItem>();
-                        foreach (var item in GeekyTool.MenuItems.instance.Items.Where(item => ApiHelper.ValidFeedUri(item.Url)))
+                        foreach (var item in GeekyTool.MenuItems.instance.Items.Where(item => GeekyHelper.ValidFeedUri(item.Url)))
                         {
                             tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
                         }

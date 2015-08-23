@@ -7,6 +7,7 @@ using Windows.Web;
 using Windows.Web.Syndication;
 using GeekyBlogs.Common;
 using GeekyBlogs.Models;
+using GeekyTool;
 
 namespace GeekyBlogs.Services
 {
@@ -106,7 +107,7 @@ namespace GeekyBlogs.Services
                 feedItem.Content = item.Summary.Text;
             }
 
-            feedItem.ImageUrl = ApiHelper.ExtractFirstImageFromHtml(feedItem.Content);
+            feedItem.ImageUrl = GeekyHelper.ExtractFirstImageFromHtml(feedItem.Content);
 
             if (item.Links.Count > 0)
             {
