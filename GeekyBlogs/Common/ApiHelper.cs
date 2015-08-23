@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.UI;
 using Windows.UI.Popups;
-using Windows.UI.Xaml.Media;
-using Windows.Web.Syndication;
 
 namespace GeekyBlogs.Common
 {

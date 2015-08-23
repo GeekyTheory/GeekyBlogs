@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
-using GeekyBlogs.ViewModels.Base;
 using GeekyBlogs.Views;
-using MenuItem = GeekyTool.Models.MenuItem;
+using GeekyTool.Models;
+using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels
 {
-    public class ItemDetailViewModel : ViewModelBaseExtension
+    public class ItemDetailViewModel : ViewModelBase
     {
         public ItemDetailViewModel()
         {
@@ -52,21 +45,6 @@ namespace GeekyBlogs.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }
-
-        protected override void PerformNavigationCommandDelegate(MenuItem item)
-        {
-            if (item.View == null)
-                return;
-
-            if (item.View == typeof(MainView))
-            {
-                while (SplitViewFrame.CanGoBack)
-                {
-                    SplitViewFrame.GoBack();
-                }
-            }
-            SplitViewFrame.Navigate(item.View, item);
         }
     }
 }

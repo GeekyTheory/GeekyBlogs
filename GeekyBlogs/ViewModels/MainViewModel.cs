@@ -3,11 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
-using Windows.Web.Syndication;
-using GeekyBlogs.Common;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
-using GeekyBlogs.ViewModels.Base;
 using GeekyBlogs.Views;
 using GeekyTool;
 using GeekyTool.Extensions;
@@ -17,7 +14,7 @@ using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels
 {
-    public class MainViewModel : ViewModelBaseExtension
+    public class MainViewModel : ViewModelBase
     {
         private readonly IFeedManagerService feedManagerService;
         private readonly INavigationService navigationService;
@@ -59,7 +56,7 @@ namespace GeekyBlogs.ViewModels
                     else if(menuItem.View == typeof(MainView))
                     {
                         var tempList = new List<FeedItem>();
-                        foreach (var item in GeekyTool.MenuItems.instance.Items.Where(item => GeekyHelper.ValidFeedUri(item.Url)))
+                        foreach (var item in MenuItems.instance.Items.Where(item => GeekyHelper.ValidFeedUri(item.Url)))
                         {
                             tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
                         }
@@ -101,21 +98,6 @@ namespace GeekyBlogs.ViewModels
                     feed = null;
                 }
             }
-        }
-
-        protected override void PerformNavigationCommandDelegate(GeekyTool.Models.MenuItem item)
-        {
-            if (item.View == null)
-                return;
-
-            if (item.View == typeof(MainView))
-            {
-                while (SplitViewFrame.CanGoBack)
-                {
-                    SplitViewFrame.GoBack();
-                }
-            }
-            SplitViewFrame.Navigate(item.View, item);
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Windows.Web.Syndication;
-using GeekyBlogs.Services;
 using GeekyTool.Models;
 using GeekyTool.Services;
 

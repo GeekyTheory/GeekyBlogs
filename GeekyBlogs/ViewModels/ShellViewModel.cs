@@ -1,22 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
-using GeekyBlogs.Models;
-using GeekyBlogs.Services;
-using GeekyBlogs.ViewModels.Base;
 using GeekyBlogs.Views;
 using GeekyTool.Commands;
-using GeekyTool.Services.SplitterMenuService;
+using GeekyTool.Models;
 using GeekyTool.ViewModels;
-using MenuItem = GeekyTool.Models.MenuItem;
 
 namespace GeekyBlogs.ViewModels
 {
-    public class ShellViewModel : ViewModelBaseExtension
+    public class ShellViewModel : SplitterViewModelBase
     {
         public ShellViewModel()
         {
@@ -33,8 +28,7 @@ namespace GeekyBlogs.ViewModels
 
         public override Task OnNavigatedTo(NavigationEventArgs e)
         {
-            GeekyTool.MenuItems.Instance();
-            GeekyTool.MenuItems.instance.Items = new ObservableCollection<MenuItem>()
+            var items = new List<MenuItem>()
             {
                 new MenuItem
                 {
@@ -66,11 +60,9 @@ namespace GeekyBlogs.ViewModels
                 }
             };
 
-            //SplitterMenuService.AddItems(GeekyTool.MenuItems.instance.Items);
+            SplitterMenuService.AddItems(items);
             
             MenuItem = MenuItems.FirstOrDefault(x => x.View == typeof (MainView));
-
-            //GeekyTool.MenuItems.instance.Items.Remove(MenuItem);
 
             return Task.FromResult(true);
         }
