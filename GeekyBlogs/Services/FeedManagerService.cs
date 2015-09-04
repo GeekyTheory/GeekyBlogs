@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Web;
 using Windows.Web.Syndication;
@@ -37,14 +39,12 @@ namespace GeekyBlogs.Services
                 List<FeedItem> feedItems = new List<FeedItem>();
                 SyndicationFeed feed = await client.RetrieveFeedAsync(uri);
 
-                //rootPage.NotifyUser("Feed download complete.", NotifyType.StatusMessage);
-
                 //ISyndicationText title = feed.Title;
                 //feedData.Title = title != null ? title.Text : "(no title)";
-                
-                foreach (FeedItem feedItem in feed.Items.Select((item, i) => CreateFeedItem(item, feed.SourceFormat, i)))
+
+                foreach (Task<FeedItem> feedItem in feed.Items.Select((item, i) => CreateFeedItem(item, feed.SourceFormat, i)))
                 {
-                    feedItems.Add(feedItem);
+                    feedItems.Add(await feedItem);
                 }
 
                 //foreach (SyndicationItem item in feed.Items)
@@ -81,7 +81,7 @@ namespace GeekyBlogs.Services
             return null;
         }
 
-        private FeedItem CreateFeedItem(SyndicationItem item, SyndicationFormat format, int i)
+        private async Task<FeedItem> CreateFeedItem(SyndicationItem item, SyndicationFormat format, int i)
         {
             var feedItem = new FeedItem();
             feedItem.Format = format;
@@ -112,6 +112,10 @@ namespace GeekyBlogs.Services
             {
                 feedItem.Link = item.Links.FirstOrDefault().Uri;
             }
+
+            var httpClient = new HttpClient();
+            feedItem.Content = await httpClient.GetStringAsync(feedItem.Link);
+            feedItem.Content = Regex.Replace(feedItem.Content, CommonSettings.matchHeader, String.Empty);
 
 
             if (i == 0 || i == 1)

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
 using GeekyBlogs.Services;
@@ -45,33 +46,73 @@ namespace GeekyBlogs.ViewModels
                 {
                     var menuItem = (MenuItem) e.Parameter;
 
+                    var tempList = new List<FeedItem>();
                     if (menuItem.Title == "Geeky Theory")
                     {
-                        Feeds = (await feedManagerService.GetFeedAsync(menuItem.Url)).ToObservableCollection();
+                        tempList = (await feedManagerService.GetFeedAsync(menuItem.Url));
                     }
                     else if (menuItem.Title == "Geeky Juegos")
                     {
-                        Feeds = (await feedManagerService.GetFeedAsync(menuItem.Url)).ToObservableCollection();
+                        tempList = (await feedManagerService.GetFeedAsync(menuItem.Url));
                     }
                     else if(menuItem.View == typeof(MainView))
                     {
-                        var tempList = new List<FeedItem>();
                         foreach (var item in MenuItems.instance.Items.Where(item => GeekyHelper.ValidFeedUri(item.Url)))
                         {
                             tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
                         }
-                        tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
-                        tempList.ForEach(x =>
-                        {
-                            x.ColSpan = 1;
-                            x.RowSpan = 1;
-                        });
-                        tempList[0].ColSpan = 2; tempList[0].RowSpan = 2;
-                        tempList[1].ColSpan = 2; tempList[1].RowSpan = 2;
-                        Feeds = tempList.ToObservableCollection();
                     }
+                    PrepareGridViewForSize(tempList);
                 }
             }
+        }
+
+        private double previousSize = 0;
+
+        public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            base.AppView_SizeChanged(sender, e);
+
+            PrepareGridViewForSize(Feeds.ToList());
+            previousSize = ViewWidth;
+        }
+
+        private void PrepareGridViewForSize(List<FeedItem> tempList)
+        {
+            if (tempList == null || tempList.Count == 0)
+                return;
+
+            if (ViewWidth < (int)Enums.Size.OnehandState)
+            {
+                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                tempList.ForEach(x =>
+                {
+                    x.RowSpan = 1; x.ColSpan = 2;
+                });
+                tempList[0].RowSpan = 1; tempList[0].ColSpan = 4;
+            }
+            else if (ViewWidth < (int)Enums.Size.MiddleState)
+            {
+                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                tempList.ForEach(x =>
+                {
+                    x.RowSpan = 1; x.ColSpan = 2;
+                });
+                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
+                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+            }
+            else if (ViewWidth < (int)Enums.Size.DesktopState)
+            {
+                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                tempList.ForEach(x =>
+                {
+                    x.RowSpan = 1; x.ColSpan = 1;
+                });
+                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
+                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2; 
+            }
+
+            Feeds = tempList.ToObservableCollection();
         }
 
 
@@ -80,8 +121,11 @@ namespace GeekyBlogs.ViewModels
             get { return feeds; }
             set
             {
-                feeds = value;
-                OnPropertyChanged();
+                if (feeds != value)
+                {
+                    feeds = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
