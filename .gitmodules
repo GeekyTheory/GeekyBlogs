@@ -1,0 +1,4 @@
+[submodule "GeekyTool"]
+	path = GeekyTool
+	url = https://github.com/GeekyTheory/GeekyTool.git
+	branch = dev
