@@ -11,6 +11,7 @@ using GeekyTool;
 using GeekyTool.Extensions;
 using GeekyTool.Models;
 using GeekyTool.Services;
+using GeekyTool.Services.SplitterMenuService;
 using GeekyTool.ViewModels;
 
 namespace GeekyBlogs.ViewModels
@@ -19,16 +20,19 @@ namespace GeekyBlogs.ViewModels
     {
         private readonly IFeedManagerService feedManagerService;
         private readonly INavigationService navigationService;
+        private readonly ISplitterMenuService splitterMenuService;
         
         private ObservableCollection<FeedItem> feeds;
         private FeedItem feed;
 
-        public MainViewModel(IFeedManagerService feedManagerService, INavigationService navigationService)
+        public MainViewModel(IFeedManagerService feedManagerService, INavigationService navigationService, ISplitterMenuService splitterMenuService)
         {
             this.feedManagerService = feedManagerService;
             this.navigationService = navigationService;
+            this.splitterMenuService = splitterMenuService;
 
             Feeds = new ObservableCollection<FeedItem>();
+            AllFeeds = new List<FeedItem>();
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
@@ -47,22 +51,37 @@ namespace GeekyBlogs.ViewModels
                     var menuItem = (MenuItem) e.Parameter;
 
                     var tempList = new List<FeedItem>();
-                    if (menuItem.Title == "Geeky Theory")
+                    IsBusy = true;
+                    switch (menuItem.Title)
                     {
-                        tempList = (await feedManagerService.GetFeedAsync(menuItem.Url));
+                        case CommonSettings.GEEKY_THEORY:
+                            if (AllFeeds.Count > 1 && AllFeeds.Any(x => x.BlogItem.Title == CommonSettings.GEEKY_THEORY))
+                                tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_THEORY)));
+                            else
+                                tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
+                            Feeds = tempList.ToObservableCollection();
+                            break;
+                        case CommonSettings.GEEKY_JUEGOS:
+                            if (AllFeeds.Count > 1 && AllFeeds.Any(x => x.BlogItem.Title == CommonSettings.GEEKY_JUEGOS))
+                                tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_JUEGOS)));
+                            else
+                                tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
+                            Feeds = tempList.ToObservableCollection();
+                            break;
+                        default:
+                            if(menuItem.View == typeof(MainView))
+                            {
+                                foreach (var item in splitterMenuService.GetItems().Where(item => GeekyHelper.ValidFeedUri(item.Url)))
+                                {
+                                    tempList.AddRange(await feedManagerService.GetFeedFromMenuItemAsync(item));
+                                    AllFeeds.AddRange(tempList);
+                                }
+                            }
+                            break;
                     }
-                    else if (menuItem.Title == "Geeky Juegos")
-                    {
-                        tempList = (await feedManagerService.GetFeedAsync(menuItem.Url));
-                    }
-                    else if(menuItem.View == typeof(MainView))
-                    {
-                        foreach (var item in MenuItems.instance.Items.Where(item => GeekyHelper.ValidFeedUri(item.Url)))
-                        {
-                            tempList.AddRange(await feedManagerService.GetFeedAsync(item.Url));
-                        }
-                    }
+                    tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
                     PrepareGridViewForSize(tempList);
+                    IsBusy = false;
                 }
             }
         }
@@ -77,43 +96,81 @@ namespace GeekyBlogs.ViewModels
             previousSize = ViewWidth;
         }
 
+
+        private string currentSizeState;
+        public string CurrentSizeState
+        {
+            get { return currentSizeState; }
+            set
+            {
+                if (currentSizeState == value) return;
+                currentSizeState = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void PrepareGridViewForSize(List<FeedItem> tempList)
         {
             if (tempList == null || tempList.Count == 0)
                 return;
 
-            if (ViewWidth < (int)Enums.Size.OnehandState)
+            if (CurrentSizeState != Enums.Size.OnehandState.ToString() && ViewWidth < (int)Enums.Size.OnehandState)
             {
-                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                CurrentSizeState = Enums.Size.OnehandState.ToString();
+
                 tempList.ForEach(x =>
                 {
                     x.RowSpan = 1; x.ColSpan = 2;
                 });
                 tempList[0].RowSpan = 1; tempList[0].ColSpan = 4;
+
+                Feeds = tempList.ToObservableCollection();
             }
-            else if (ViewWidth < (int)Enums.Size.MiddleState)
+            else if (CurrentSizeState != Enums.Size.MiddleState.ToString() 
+                && ViewWidth < (int)Enums.Size.MiddleState && ViewWidth > (int)Enums.Size.OnehandState)
             {
-                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                CurrentSizeState = Enums.Size.MiddleState.ToString();
+
                 tempList.ForEach(x =>
                 {
                     x.RowSpan = 1; x.ColSpan = 2;
                 });
                 tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
                 tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+
+                Feeds = tempList.ToObservableCollection();
             }
-            else if (ViewWidth < (int)Enums.Size.DesktopState)
+            else if (CurrentSizeState != Enums.Size.DesktopState.ToString() 
+                && ViewWidth > (int)Enums.Size.MiddleState)
             {
-                tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
+                CurrentSizeState = Enums.Size.DesktopState.ToString();
+
                 tempList.ForEach(x =>
                 {
                     x.RowSpan = 1; x.ColSpan = 1;
                 });
                 tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
-                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2; 
-            }
+                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
 
-            Feeds = tempList.ToObservableCollection();
+                Feeds = tempList.ToObservableCollection();
+            }
         }
+
+
+        private List<FeedItem> allFeeds;
+        public List<FeedItem> AllFeeds
+        {
+            get { return allFeeds; }
+            set
+            {
+                if (allFeeds != value)
+                {
+                    allFeeds = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
 
         public ObservableCollection<FeedItem> Feeds
@@ -134,13 +191,11 @@ namespace GeekyBlogs.ViewModels
             get { return feed; }
             set
             {
-                if (feed != value)
-                {
-                    feed = value;
-                    OnPropertyChanged();
-                    AppFrame.Navigate(typeof(ItemDetailView), Feed);
-                    feed = null;
-                }
+                if (feed == value) return;
+                feed = value;
+                OnPropertyChanged();
+                AppFrame.Navigate(typeof(ItemDetailView), Feed);
+                feed = null;
             }
         }
     }

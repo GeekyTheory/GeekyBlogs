@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
+using GeekyBlogs.Services;
 using GeekyBlogs.Views;
 using GeekyTool.Models;
 using GeekyTool.ViewModels;
@@ -9,9 +10,10 @@ namespace GeekyBlogs.ViewModels
 {
     public class ItemDetailViewModel : ViewModelBase
     {
-        public ItemDetailViewModel()
+        private readonly IFeedManagerService feedManagerService;
+        public ItemDetailViewModel(IFeedManagerService feedManagerService)
         {
-            
+            this.feedManagerService = feedManagerService;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
@@ -19,16 +21,18 @@ namespace GeekyBlogs.ViewModels
             return null;
         }
 
-        public override Task OnNavigatedTo(NavigationEventArgs e)
+        public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
             SetVisibilityOfNavigationBack();
 
             if (e.Parameter is FeedItem)
             {
-                Feed = (FeedItem) e.Parameter;
+                IsBusy = true;
+                feed = (FeedItem) e.Parameter;
+                feed.Content = await feedManagerService.RemoveUnusedElementsAsync(Feed.Link.ToString());
+                OnPropertyChanged(nameof(Feed));
+                IsBusy = false;
             }
-
-            return Task.FromResult(true);
         }
 
 

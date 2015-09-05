@@ -19,7 +19,7 @@
                         <AdaptiveTrigger MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline"/>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="OnehandState">
@@ -27,11 +27,13 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="Overlay"/>
+                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <WebView extensions:WebViewExtension.Html="{Binding Feed.Content}"/>
+        <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
+        <WebView Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                 extensions:WebViewExtension.Html="{Binding Feed.Content}" />
     </Grid>
 </geekyTool:PageBase>

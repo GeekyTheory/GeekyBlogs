@@ -4,31 +4,51 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.UI.WebUI;
 using Windows.Web;
 using Windows.Web.Syndication;
 using GeekyBlogs.Common;
 using GeekyBlogs.Models;
 using GeekyTool;
+using GeekyTool.Models;
+using HtmlAgilityPack;
 
 namespace GeekyBlogs.Services
 {
     public interface IFeedManagerService
     {
+        Task<List<FeedItem>> GetFeedFromMenuItemAsync(MenuItem menuItem);
         Task<List<FeedItem>> GetFeedAsync(string rssUri);
+        Task<string> RemoveUnusedElementsAsync(string url);
     }
 
     public class FeedManagerService : IFeedManagerService
     {
-        public async Task<List<FeedItem>> GetFeedAsync(string feedUri)
+        public async Task<List<FeedItem>> GetFeedFromMenuItemAsync(MenuItem menuItem)
+        {
+            var feeds = await GetFeedAsync(menuItem.Url);
+            foreach (var feedItem in feeds)
+            {
+                feedItem.BlogItem = menuItem;
+            }
+            return feeds;
+        }
+
+        /// <summary>
+        /// Get the feeds with the SyndicationClient
+        /// </summary>
+        /// <param name="feedUri"></param>
+        /// <returns></returns>
+        public async Task<List<FeedItem>> GetFeedAsync(string url)
         {
             Uri uri;
-            if (!Uri.TryCreate(feedUri.Trim(), UriKind.Absolute, out uri))
+            if (!Uri.TryCreate(url.Trim(), UriKind.Absolute, out uri))
             {
-                //rootPage.NotifyUser("Error: Invalid URI.", NotifyType.ErrorMessage);
+                await ApiHelper.ShowMessageDialog("Error", "Invalid URI");
                 return null;
             }
 
-            SyndicationClient client = new SyndicationClient();
+            var client = new SyndicationClient();
             client.BypassCacheOnRetrieve = true;
 
             client.SetRequestHeader("User-Agent",
@@ -36,32 +56,18 @@ namespace GeekyBlogs.Services
 
             try
             {
-                List<FeedItem> feedItems = new List<FeedItem>();
-                SyndicationFeed feed = await client.RetrieveFeedAsync(uri);
+                var feed = await client.RetrieveFeedAsync(uri);
 
-                //ISyndicationText title = feed.Title;
-                //feedData.Title = title != null ? title.Text : "(no title)";
-
-                foreach (Task<FeedItem> feedItem in feed.Items.Select((item, i) => CreateFeedItem(item, feed.SourceFormat, i)))
-                {
-                    feedItems.Add(await feedItem);
-                }
-
-                //foreach (SyndicationItem item in feed.Items)
-                //{
-                //    FeedItem feedItem = CreateFeedItem(item, feed.SourceFormat);
-                //    feedData.Items.Add(feedItem);
-                //}
-
-                return feedItems;
+                return feed.Items.Select((item, i) => CreateFeedItem(item, feed.SourceFormat, i)).ToList();
             }
             catch (Exception ex)
             {
-                SyndicationErrorStatus status = SyndicationError.GetStatus(ex.HResult);
+                var status = SyndicationError.GetStatus(ex.HResult);
                 if (status == SyndicationErrorStatus.InvalidXml)
                 {
-                    //OutputField.Text += "An invalid XML exception was thrown. " +
-                    //    "Please make sure to use a URI that points to a RSS or Atom feed.";
+                    await ApiHelper.ShowMessageDialog("Error", 
+                        "An invalid XML exception was thrown. Please make sure to use a URI that points to a RSS or Atom feed."
+                        + "\n\n\n" + ex.Message);
                 }
 
                 if (status == SyndicationErrorStatus.Unknown)
@@ -70,21 +76,73 @@ namespace GeekyBlogs.Services
 
                     if (webError == WebErrorStatus.Unknown)
                     {
-                        // Neither a syndication nor a web error. Rethrow.
-                        throw;
+                        await ApiHelper.ShowMessageDialog("Error", ex.Message + "\n" + ex.InnerException?.Message);
                     }
                 }
-
-                //rootPage.NotifyUser(ex.Message, NotifyType.ErrorMessage);
             }
 
             return null;
         }
 
-        private async Task<FeedItem> CreateFeedItem(SyndicationItem item, SyndicationFormat format, int i)
+        /// <summary>
+        /// Removing unused elements on html content
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="web"></param>
+        /// <param name="feedItem"></param>
+        /// <returns></returns>
+        public async Task<string> RemoveUnusedElementsAsync(string url)
         {
-            var feedItem = new FeedItem();
-            feedItem.Format = format;
+            HtmlWeb web = new HtmlWeb();
+            var document = await web.LoadFromWebAsync(url);
+
+            document.DocumentNode.Descendants().Where(x => x.Id == "fb-root").ToList().ForEach(x => x.Remove());
+            document.DocumentNode.Descendants().Where(x => x.Id == "header").ToList().ForEach(x => x.Remove());
+            document.DocumentNode
+                .Descendants(
+                    "div")
+                .FirstOrDefault(
+                    d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("section-head")).Remove();
+            document.DocumentNode
+                .Descendants(
+                    "div")
+                .FirstOrDefault(
+                    d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("container inner"))
+                .Descendants("div").First().Remove();
+            document.DocumentNode
+                .Descendants(
+                    "div")
+                .FirstOrDefault(
+                    d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("meta"))?.Remove();
+            document.DocumentNode
+                .Descendants(
+                    "div")
+                .FirstOrDefault(
+                    d =>
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("ssba"))?.Remove();
+            document.DocumentNode.Descendants().Where(x => x.Id == "jp-relatedposts").ToList().ForEach(x => x?.Remove());
+            document.DocumentNode.Descendants("aside").ToList().ForEach(x => x.Remove());
+            document.DocumentNode.Descendants("footer").ToList().ForEach(x => x.Remove());
+
+            // Modify some elements
+
+            return document.DocumentNode.OuterHtml;
+        }
+
+        /// <summary>
+        /// Create each item from the SyndicationItem. Necesary to format the Content property with RemoveUnusedElementsAsync
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="format"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private FeedItem CreateFeedItem(SyndicationItem item, SyndicationFormat format, int i)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var feedItem = new FeedItem {Format = format};
 
             if (item.Title != null)
                 feedItem.Title = item.Title.Text;
@@ -112,12 +170,7 @@ namespace GeekyBlogs.Services
             {
                 feedItem.Link = item.Links.FirstOrDefault().Uri;
             }
-
-            var httpClient = new HttpClient();
-            feedItem.Content = await httpClient.GetStringAsync(feedItem.Link);
-            feedItem.Content = Regex.Replace(feedItem.Content, CommonSettings.matchHeader, String.Empty);
-
-
+            
             if (i == 0 || i == 1)
             {
                 feedItem.ColSpan = 2;
@@ -129,9 +182,7 @@ namespace GeekyBlogs.Services
                 feedItem.RowSpan = 1;
             }
             
-
             return feedItem;
         }
-
     }
 }

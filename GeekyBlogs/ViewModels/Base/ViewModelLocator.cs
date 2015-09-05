@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using GeekyBlogs.Services;
 using GeekyTool.Services;
+using GeekyTool.Services.SplitterMenuService;
 
 namespace GeekyBlogs.ViewModels.Base
 {
@@ -16,6 +17,7 @@ namespace GeekyBlogs.ViewModels.Base
             builder.RegisterType<NavigationService>().As<INavigationService>();
             builder.RegisterType<LocalSettingsService>().As<ILocalSettingsService>();
             builder.RegisterType<FeedManagerService>().As<IFeedManagerService>();
+            builder.RegisterType<SplitterMenuService>().As<ISplitterMenuService>();
 
             // ViewModels
             builder.RegisterType<ShellViewModel>();

@@ -40,17 +40,17 @@ namespace GeekyBlogs.ViewModels
                 new MenuItem
                 {
                     Icon = "ms-appx:///Assets/Geeky/geeky_theory_icon_round.png",
-                    Title = "Geeky Theory",
+                    Title = CommonSettings.GEEKY_THEORY,
                     Brush = "#1ABB9C",
-                    Url = "http://geekytheory.com/feed/",
+                    Url = "https://geekytheory.com/feed",
                     View = typeof (MainView)
                 },
                 new MenuItem
                 {
                     Icon = "ms-appx:///Assets/Geeky/geeky_juegos_icon_round.png",
-                    Title = "Geeky Juegos",
+                    Title = CommonSettings.GEEKY_JUEGOS,
                     Brush = "#FF6C60",
-                    Url = "http://geekyjuegos.com/feed/",
+                    Url = "https://geekyjuegos.com/feed",
                     View = typeof (MainView)
                 },
                 new MenuItem
