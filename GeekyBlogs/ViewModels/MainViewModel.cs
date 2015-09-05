@@ -33,6 +33,7 @@ namespace GeekyBlogs.ViewModels
 
             Feeds = new ObservableCollection<FeedItem>();
             AllFeeds = new List<FeedItem>();
+            VariableSizedGrid_Height = 240;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
@@ -146,14 +147,30 @@ namespace GeekyBlogs.ViewModels
         }
 
 
+        private double variableSizedGrid_Height;
+        public double VariableSizedGrid_Height
+        {
+            get { return variableSizedGrid_Height; }
+            set
+            {
+                if (variableSizedGrid_Height == value) return;
+                variableSizedGrid_Height = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private void PrepareGridViewForSize(List<FeedItem> tempList)
         {
             if (tempList == null || tempList.Count == 0)
                 return;
 
-            if (CurrentSizeState != Enums.Size.OnehandState.ToString() && ViewWidth < (int)Enums.Size.OnehandState)
+            // SmallDevices 0px - 768px
+            if (CurrentSizeState != Enums.Size.SmallDevices.ToString()
+                && ViewWidth >= (int)Enums.Size.SmallDevices
+                && ViewWidth < (int)Enums.Size.MediumDevices)
             {
-                CurrentSizeState = Enums.Size.OnehandState.ToString();
+                CurrentSizeState = Enums.Size.SmallDevices.ToString();
 
                 tempList.ForEach(x =>
                 {
@@ -163,10 +180,12 @@ namespace GeekyBlogs.ViewModels
 
                 Feeds = tempList.ToObservableCollection();
             }
-            else if (CurrentSizeState != Enums.Size.MiddleState.ToString() 
-                     && ViewWidth < (int)Enums.Size.MiddleState && ViewWidth > (int)Enums.Size.OnehandState)
+            // MediumDevices 768px - 992px
+            else if (CurrentSizeState != Enums.Size.MediumDevices.ToString()
+                && ViewWidth >= (int)Enums.Size.MediumDevices
+                && ViewWidth < (int)Enums.Size.LargeDevices)
             {
-                CurrentSizeState = Enums.Size.MiddleState.ToString();
+                CurrentSizeState = Enums.Size.MediumDevices.ToString();
 
                 tempList.ForEach(x =>
                 {
@@ -177,10 +196,27 @@ namespace GeekyBlogs.ViewModels
 
                 Feeds = tempList.ToObservableCollection();
             }
-            else if (CurrentSizeState != Enums.Size.DesktopState.ToString() 
-                     && ViewWidth > (int)Enums.Size.MiddleState)
+            // LargeDevices 992px - 1200px
+            else if (CurrentSizeState != Enums.Size.LargeDevices.ToString()
+                && ViewWidth >= (int)Enums.Size.LargeDevices
+                && ViewWidth < (int)Enums.Size.XLargeDevices)
             {
-                CurrentSizeState = Enums.Size.DesktopState.ToString();
+                CurrentSizeState = Enums.Size.LargeDevices.ToString();
+
+                tempList.ForEach(x =>
+                {
+                    x.RowSpan = 1; x.ColSpan = 1;
+                });
+                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
+                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+
+                Feeds = tempList.ToObservableCollection();
+            }
+            // XLargeDevices > 1200px
+            else if (CurrentSizeState != Enums.Size.XLargeDevices.ToString()
+                && ViewWidth >= (int)Enums.Size.XLargeDevices)
+            {
+                CurrentSizeState = Enums.Size.XLargeDevices.ToString();
 
                 tempList.ForEach(x =>
                 {

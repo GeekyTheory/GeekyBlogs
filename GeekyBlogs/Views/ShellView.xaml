@@ -21,20 +21,37 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="DesktopState">
+                <VisualState x:Name="XLargeDevices">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="641" />
+                        <AdaptiveTrigger MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactOverlay"/>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="OnehandState">
+                <VisualState x:Name="LargeDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="992" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="768" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallDevices">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="Overlay"/>
+                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
+                        <Setter Target="WrapGridName.ItemHeight" Value="600"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

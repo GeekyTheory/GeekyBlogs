@@ -13,15 +13,31 @@
     <Grid Margin="0,38,0,0" Background="{StaticResource Gray300}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="DesktopState">
+                <VisualState x:Name="XLargeDevices">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="641" />
+                        <AdaptiveTrigger MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
                     </VisualState.Setters>
                 </VisualState>
-                <VisualState x:Name="OnehandState">
+                <VisualState x:Name="LargeDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="992" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="768" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallDevices">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
@@ -50,10 +66,10 @@
             </GridView.ItemContainerStyle>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid
+                    <VariableSizedWrapGrid x:Name="WrapGridName"
                         Background="{StaticResource Gray300}"
                         Orientation="Horizontal"
-                        ItemHeight="240"
+                        ItemHeight="{Binding VariableSizedGrid_Height}"
                         ItemWidth="{Binding VariableSizedGrid_Width}" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>

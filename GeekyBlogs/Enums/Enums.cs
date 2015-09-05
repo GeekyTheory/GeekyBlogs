@@ -11,9 +11,10 @@ namespace GeekyBlogs
     {
         public enum Size
         {
-            OnehandState = 641,
-            MiddleState = 801,
-            DesktopState = 1025
+            SmallDevices = 0,
+            MediumDevices = 768,
+            LargeDevices = 992,
+            XLargeDevices = 1200
         }
     }
 }
