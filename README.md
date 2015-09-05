@@ -1,15 +1,24 @@
-##Proyecto open source de Geeky Blogs para la plataforma Windows
+#Geeky Blogs
+
+[TOC]
+
+###Proyecto open source
 Está desarrollado por [Dachi Gogotchuri][1] y sus tutoriales, articulos y noticias pueden encontrarse en [Geeky Theory][2].
 
 ###Utilización
 * Simplemente decarga el código haciendo un clone o un fork
 * Enjoy the coding!
 
-![alt text](https://geekytheory.com/wp-content/uploads/2015/03/wp_ss_20150301_0001.png)
-![alt text](https://geekytheory.com/wp-content/uploads/2015/03/wp_ss_20150301_0002.png)
-![alt text](https://geekytheory.com/wp-content/uploads/2015/03/wp_ss_20150301_0003.png)
-![alt text](https://geekytheory.com/wp-content/uploads/2015/03/wp_ss_20150301_0004.png)
-![alt text](https://geekytheory.com/wp-content/uploads/2015/03/wp_ss_20150301_0005.png)
+### Geeky Blogs Windows 10 screenshot
+
+| ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture1.png)  |  ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture2.png)
+|---|---|
+
+
+### Geeky Blogs Windows 10 Mobile screenshots
+
+| ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture3.png) | ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture4.png) | ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture5.png) | ![alt text](https://geekytheory.com/wp-content/uploads/2015/09/GeekyBlogAppCapture6.png)
+|----|
 
 ###License
 
