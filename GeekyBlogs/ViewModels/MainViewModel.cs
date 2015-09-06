@@ -75,7 +75,7 @@ namespace GeekyBlogs.ViewModels
                                 foreach (var item in splitterMenuService.GetItems().Where(item => GeekyHelper.ValidFeedUri(item.Url)))
                                 {
                                     tempList.AddRange(await feedManagerService.GetFeedFromMenuItemAsync(item));
-                                    AllFeeds.AddRange(tempList);
+                                    AllFeeds = tempList;
                                 }
                             }
                             Feeds = tempList.ToObservableCollection();
