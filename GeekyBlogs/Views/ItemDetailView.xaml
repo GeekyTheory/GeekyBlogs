@@ -11,7 +11,7 @@
     DataContext="{Binding ItemDetailViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Margin="0,38,0,0" Background="{StaticResource Gray300}">
+    <Grid Margin="0,38,0,0" Background="#F0F0F0">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="XLargeDevices">
@@ -45,9 +45,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
-        <!--<WebView Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                 extensions:WebViewExtension.Navigate="{Binding Feed.Link}" />-->
-        <WebView Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                 extensions:WebViewExtension.Html="{Binding Feed.Content}" />
+        <WebView Margin="90,0,90,9" Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                 extensions:WebViewExtension.Html="{Binding Feed.Content}"
+                 NavigationCompleted="WebView_OnNavigationCompleted"  x:Name="webView"/>
     </Grid>
 </geekyTool:PageBase>
