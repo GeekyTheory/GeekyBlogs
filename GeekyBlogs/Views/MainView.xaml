@@ -26,7 +26,7 @@
                         <AdaptiveTrigger MinWindowWidth="992" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumDevices">
@@ -34,7 +34,7 @@
                         <AdaptiveTrigger MinWindowWidth="768" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallDevices">
@@ -50,30 +50,68 @@
 
         <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
 
-        <geekyControls:VariableGridView x:Name="VariableGridView"
-                                        Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                                        Background="{StaticResource Gray300}"
-                                        ItemsSource="{Binding Feeds}"
-                                        SelectionChanged="VariableGridView_OnSelectionChanged"
-                                        SelectedItem="{Binding Feed, Mode=TwoWay}"
-                                        ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
-            <GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem">
-                    <Setter Property="HorizontalContentAlignment"
-                            Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment"
-                            Value="Stretch" />
-                </Style>
-            </GridView.ItemContainerStyle>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VariableSizedWrapGrid x:Name="WrapGridName"
-                        Background="{StaticResource Gray300}"
-                        Orientation="Horizontal"
-                        ItemHeight="{Binding VariableSizedGrid_Height}"
-                        ItemWidth="{Binding VariableSizedGrid_Width}" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-        </geekyControls:VariableGridView>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled"
+                      IsHorizontalRailEnabled="False" IsHorizontalScrollChainingEnabled="False"
+                      Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <geekyControls:VariableGridView x:Name="OutstandingVariableGridView"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                Background="{StaticResource Gray300}"
+                                                ItemsSource="{Binding OutstandingFeeds}"
+                                                SelectionChanged="VariableGridView_OnSelectionChanged"
+                                                SelectedItem="{Binding Feed, Mode=TwoWay}"
+                                                ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment"
+                                    Value="Stretch" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid
+                                Background="{StaticResource Gray300}"
+                                Orientation="Horizontal"
+                                ItemHeight="{Binding VariableSizedGrid_Height}"
+                                ItemWidth="{Binding VariableSizedGrid_Width}" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </geekyControls:VariableGridView>
+
+                <geekyControls:VariableGridView Grid.Row="1" x:Name="VariableGridView"
+                                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                Background="{StaticResource Gray300}"
+                                                ItemsSource="{Binding Feeds}"
+                                                SelectionChanged="VariableGridView_OnSelectionChanged"
+                                                SelectedItem="{Binding Feed, Mode=TwoWay}"
+                                                ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="HorizontalContentAlignment"
+                                    Value="Stretch" />
+                            <Setter Property="VerticalContentAlignment"
+                                    Value="Stretch" />
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid
+                                Background="{StaticResource Gray300}"
+                                Orientation="Horizontal"
+                                ItemHeight="{Binding VariableSizedGrid_Height}"
+                                ItemWidth="{Binding VariableSizedGrid_Width}" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </geekyControls:VariableGridView></Grid>
+
+        </ScrollViewer>
     </Grid>
 </geekyTool:PageBase>

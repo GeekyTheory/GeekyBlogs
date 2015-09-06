@@ -21,8 +21,9 @@ namespace GeekyBlogs.ViewModels
         private readonly IFeedManagerService feedManagerService;
         private readonly ISplitterMenuService splitterMenuService;
 
-        private ObservableCollection<FeedItem> feeds;
         private List<FeedItem> allFeeds;
+        private List<FeedItem> outstandingFeeds;
+        private List<FeedItem> feeds;
         private FeedItem feed;
         private string currentSizeState;
 
@@ -31,8 +32,10 @@ namespace GeekyBlogs.ViewModels
             this.feedManagerService = feedManagerService;
             this.splitterMenuService = splitterMenuService;
 
-            Feeds = new ObservableCollection<FeedItem>();
             AllFeeds = new List<FeedItem>();
+            OutstandingFeeds = new List<FeedItem>();
+            Feeds = new List<FeedItem>();
+
             VariableSizedGrid_Height = 240;
         }
 
@@ -60,14 +63,14 @@ namespace GeekyBlogs.ViewModels
                                 tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_THEORY)));
                             else
                                 tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
-                            Feeds = tempList.ToObservableCollection();
+                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                         case CommonSettings.GEEKY_JUEGOS:
                             if (AllFeeds.Count > 1 && AllFeeds.Any(x => x.BlogItem.Title == CommonSettings.GEEKY_JUEGOS))
                                 tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_JUEGOS)));
                             else
                                 tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
-                            Feeds = tempList.ToObservableCollection();
+                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                         default:
                             if(menuItem.View == typeof(MainView))
@@ -78,11 +81,11 @@ namespace GeekyBlogs.ViewModels
                                     AllFeeds = tempList;
                                 }
                             }
-                            Feeds = tempList.ToObservableCollection();
+                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                     }
                     tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
-                    PrepareGridViewForSize(tempList);
+                    PrepareAllFeedItemsForDisplay(tempList);
                     IsBusy = false;
                 }
             }
@@ -92,20 +95,42 @@ namespace GeekyBlogs.ViewModels
         {
             base.AppView_SizeChanged(sender, e);
 
-            PrepareGridViewForSize(Feeds.ToList());
+            PrepareAllFeedItemsForDisplay(Feeds.ToList());
         }
 
 
-        public ObservableCollection<FeedItem> Feeds
+        public List<FeedItem> AllFeeds
+        {
+            get { return allFeeds; }
+            set
+            {
+                if (allFeeds == value) return;
+                allFeeds = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public List<FeedItem> OutstandingFeeds
+        {
+            get { return outstandingFeeds; }
+            set
+            {
+                if (outstandingFeeds == value) return;
+                outstandingFeeds = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public List<FeedItem> Feeds
         {
             get { return feeds; }
             set
             {
-                if (feeds != value)
-                {
-                    feeds = value;
-                    OnPropertyChanged();
-                }
+                if (feeds == value) return;
+                feeds = value;
+                OnPropertyChanged();
             }
         }
 
@@ -118,20 +143,7 @@ namespace GeekyBlogs.ViewModels
                 feed = value;
                 OnPropertyChanged();
                 if (Feed != null)
-                    AppFrame.Navigate(typeof (ItemDetailView), Feed);
-            }
-        }
-
-        public List<FeedItem> AllFeeds
-        {
-            get { return allFeeds; }
-            set
-            {
-                if (allFeeds != value)
-                {
-                    allFeeds = value;
-                    OnPropertyChanged();
-                }
+                    AppFrame.Navigate(typeof(ItemDetailView), Feed);
             }
         }
 
@@ -160,7 +172,7 @@ namespace GeekyBlogs.ViewModels
         }
 
 
-        private void PrepareGridViewForSize(List<FeedItem> tempList)
+        private void PrepareAllFeedItemsForDisplay(List<FeedItem> tempList)
         {
             if (tempList == null || tempList.Count == 0)
                 return;
@@ -172,13 +184,17 @@ namespace GeekyBlogs.ViewModels
             {
                 CurrentSizeState = Enums.Size.SmallDevices.ToString();
 
-                tempList.ForEach(x =>
-                {
-                    x.RowSpan = 1; x.ColSpan = 2;
-                });
-                tempList[0].RowSpan = 1; tempList[0].ColSpan = 4;
+                // Fill items
+                outstandingFeeds = tempList.Take(1).ToList();
+                feeds = tempList.Skip(1).TakeWhile(x => true).ToList();
 
-                Feeds = tempList.ToObservableCollection();
+                // Set specific size
+                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 4; });
+                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
+
+                // Update the view
+                OnPropertyChanged(nameof(OutstandingFeeds));
+                OnPropertyChanged(nameof(Feeds));
             }
             // MediumDevices 768px - 992px
             else if (CurrentSizeState != Enums.Size.MediumDevices.ToString()
@@ -187,14 +203,17 @@ namespace GeekyBlogs.ViewModels
             {
                 CurrentSizeState = Enums.Size.MediumDevices.ToString();
 
-                tempList.ForEach(x =>
-                {
-                    x.RowSpan = 1; x.ColSpan = 2;
-                });
-                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
-                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+                // Fill items
+                outstandingFeeds = tempList.Take(2).ToList();
+                feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
 
-                Feeds = tempList.ToObservableCollection();
+                // Set specific size
+                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
+                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+
+                // Update the view
+                OnPropertyChanged(nameof(OutstandingFeeds));
+                OnPropertyChanged(nameof(Feeds));
             }
             // LargeDevices 992px - 1200px
             else if (CurrentSizeState != Enums.Size.LargeDevices.ToString()
@@ -203,14 +222,17 @@ namespace GeekyBlogs.ViewModels
             {
                 CurrentSizeState = Enums.Size.LargeDevices.ToString();
 
-                tempList.ForEach(x =>
-                {
-                    x.RowSpan = 1; x.ColSpan = 1;
-                });
-                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
-                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+                // Fill items
+                outstandingFeeds = tempList.Take(2).ToList();
+                feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
 
-                Feeds = tempList.ToObservableCollection();
+                // Set specific size
+                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
+                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+
+                // Update the view
+                OnPropertyChanged(nameof(OutstandingFeeds));
+                OnPropertyChanged(nameof(Feeds));
             }
             // XLargeDevices > 1200px
             else if (CurrentSizeState != Enums.Size.XLargeDevices.ToString()
@@ -218,14 +240,17 @@ namespace GeekyBlogs.ViewModels
             {
                 CurrentSizeState = Enums.Size.XLargeDevices.ToString();
 
-                tempList.ForEach(x =>
-                {
-                    x.RowSpan = 1; x.ColSpan = 1;
-                });
-                tempList[0].RowSpan = 2; tempList[0].ColSpan = 2;
-                tempList[1].RowSpan = 2; tempList[1].ColSpan = 2;
+                // Fill items
+                outstandingFeeds = tempList.Take(3).ToList();
+                feeds = tempList.Skip(3).TakeWhile(x => true).ToList();
 
-                Feeds = tempList.ToObservableCollection();
+                // Set specific size
+                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
+                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+
+                // Update the view
+                OnPropertyChanged(nameof(OutstandingFeeds));
+                OnPropertyChanged(nameof(Feeds));
             }
         }
     }
