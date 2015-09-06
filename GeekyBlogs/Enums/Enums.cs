@@ -11,7 +11,8 @@ namespace GeekyBlogs
     {
         public enum Size
         {
-            SmallDevices = 0,
+            None = 0,
+            SmallDevices = 1,
             MediumDevices = 768,
             LargeDevices = 992,
             XLargeDevices = 1200

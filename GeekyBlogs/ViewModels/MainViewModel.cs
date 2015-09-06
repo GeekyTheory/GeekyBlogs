@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,9 @@ namespace GeekyBlogs.ViewModels
         private List<FeedItem> outstandingFeeds;
         private List<FeedItem> feeds;
         private FeedItem feed;
-        private string currentSizeState;
+        private Enums.Size currentSizeState;
+
+        private double variableSizedGrid_Height;
 
         public MainViewModel(IFeedManagerService feedManagerService, ISplitterMenuService splitterMenuService)
         {
@@ -60,32 +63,61 @@ namespace GeekyBlogs.ViewModels
                     {
                         case CommonSettings.GEEKY_THEORY:
                             if (AllFeeds.Count > 1 && AllFeeds.Any(x => x.BlogItem.Title == CommonSettings.GEEKY_THEORY))
-                                tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_THEORY)));
+                                tempList = AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_THEORY)).ToList();
                             else
                                 tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
-                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                         case CommonSettings.GEEKY_JUEGOS:
                             if (AllFeeds.Count > 1 && AllFeeds.Any(x => x.BlogItem.Title == CommonSettings.GEEKY_JUEGOS))
-                                tempList.AddRange(AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_JUEGOS)));
+                                tempList = AllFeeds.Where(item => item.BlogItem.Title.Contains(CommonSettings.GEEKY_JUEGOS)).ToList();
                             else
                                 tempList = (await feedManagerService.GetFeedFromMenuItemAsync(menuItem));
-                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                         default:
                             if(menuItem.View == typeof(MainView))
                             {
-                                foreach (var item in splitterMenuService.GetItems().Where(item => GeekyHelper.ValidFeedUri(item.Url)))
+                                if (AllFeeds.Count == 0)
                                 {
-                                    tempList.AddRange(await feedManagerService.GetFeedFromMenuItemAsync(item));
-                                    AllFeeds = tempList;
+                                    foreach (
+                                        var item in
+                                            splitterMenuService.GetItems()
+                                                .Where(item => GeekyHelper.ValidFeedUri(item.Url)))
+                                    {
+                                        tempList.AddRange(await feedManagerService.GetFeedFromMenuItemAsync(item));
+                                        AllFeeds = tempList;
+                                    }
                                 }
+                                else
+                                    tempList = AllFeeds;
                             }
-                            PrepareAllFeedItemsForDisplay(tempList);
                             break;
                     }
                     tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
-                    PrepareAllFeedItemsForDisplay(tempList);
+
+                    // Fill items
+                    switch (CurrentSizeState)
+                    {
+                        case Enums.Size.SmallDevices:
+                            outstandingFeeds = tempList.Take(1).ToList();
+                            feeds = tempList.Skip(1).TakeWhile(x => true).ToList();
+                            break;
+                        case Enums.Size.MediumDevices:
+                            outstandingFeeds = tempList.Take(2).ToList();
+                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                            break;
+                        case Enums.Size.LargeDevices:
+                            outstandingFeeds = tempList.Take(2).ToList();
+                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                            break;
+                        case Enums.Size.XLargeDevices:
+                            outstandingFeeds = tempList.Take(2).ToList();
+                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    CurrentSizeState = Enums.Size.None;
+                    PrepareAllFeedItemsForDisplay();
                     IsBusy = false;
                 }
             }
@@ -95,9 +127,8 @@ namespace GeekyBlogs.ViewModels
         {
             base.AppView_SizeChanged(sender, e);
 
-            PrepareAllFeedItemsForDisplay(Feeds.ToList());
+            PrepareAllFeedItemsForDisplay();
         }
-
 
         public List<FeedItem> AllFeeds
         {
@@ -110,7 +141,6 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-
         public List<FeedItem> OutstandingFeeds
         {
             get { return outstandingFeeds; }
@@ -121,7 +151,6 @@ namespace GeekyBlogs.ViewModels
                 OnPropertyChanged();
             }
         }
-
 
         public List<FeedItem> Feeds
         {
@@ -143,11 +172,11 @@ namespace GeekyBlogs.ViewModels
                 feed = value;
                 OnPropertyChanged();
                 if (Feed != null)
-                    AppFrame.Navigate(typeof(ItemDetailView), Feed);
+                    AppFrame.Navigate(typeof (ItemDetailView), Feed);
             }
         }
 
-        public string CurrentSizeState
+        public Enums.Size CurrentSizeState
         {
             get { return currentSizeState; }
             set
@@ -158,8 +187,6 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-
-        private double variableSizedGrid_Height;
         public double VariableSizedGrid_Height
         {
             get { return variableSizedGrid_Height; }
@@ -171,83 +198,106 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-
-        private void PrepareAllFeedItemsForDisplay(List<FeedItem> tempList)
+        private void PrepareAllFeedItemsForDisplay()
         {
-            if (tempList == null || tempList.Count == 0)
-                return;
-
             // SmallDevices 0px - 768px
-            if (CurrentSizeState != Enums.Size.SmallDevices.ToString()
-                && ViewWidth >= (int)Enums.Size.SmallDevices
-                && ViewWidth < (int)Enums.Size.MediumDevices)
+            if (CurrentSizeState != Enums.Size.SmallDevices && ViewWidth >= (int) Enums.Size.SmallDevices && ViewWidth < (int) Enums.Size.MediumDevices)
             {
-                CurrentSizeState = Enums.Size.SmallDevices.ToString();
+                CurrentSizeState = Enums.Size.SmallDevices;
 
-                // Fill items
-                outstandingFeeds = tempList.Take(1).ToList();
-                feeds = tempList.Skip(1).TakeWhile(x => true).ToList();
+                if (outstandingFeeds.Count > 1)
+                {
+                    var tempList = outstandingFeeds.Skip(1).TakeWhile(x => true).ToList();
+                    foreach (var item in tempList)
+                    {
+                        outstandingFeeds.Remove(item);
+                    }
+                    var test = feeds;
+                    test.AddRange(tempList);
+                    feeds = test;
+                }
 
-                // Set specific size
-                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 4; });
-                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
+                // Set specific size,
+                outstandingFeeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 4;
+                });
+                feeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 2;
+                });
 
                 // Update the view
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
             }
             // MediumDevices 768px - 992px
-            else if (CurrentSizeState != Enums.Size.MediumDevices.ToString()
-                && ViewWidth >= (int)Enums.Size.MediumDevices
-                && ViewWidth < (int)Enums.Size.LargeDevices)
+            else if (CurrentSizeState != Enums.Size.MediumDevices && ViewWidth >= (int) Enums.Size.MediumDevices && ViewWidth < (int) Enums.Size.LargeDevices)
             {
-                CurrentSizeState = Enums.Size.MediumDevices.ToString();
-
-                // Fill items
-                outstandingFeeds = tempList.Take(2).ToList();
-                feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                CurrentSizeState = Enums.Size.MediumDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
-                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+                outstandingFeeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 2;
+                });
+                feeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 1;
+                });
 
                 // Update the view
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
             }
             // LargeDevices 992px - 1200px
-            else if (CurrentSizeState != Enums.Size.LargeDevices.ToString()
-                && ViewWidth >= (int)Enums.Size.LargeDevices
-                && ViewWidth < (int)Enums.Size.XLargeDevices)
+            else if (CurrentSizeState != Enums.Size.LargeDevices && ViewWidth >= (int) Enums.Size.LargeDevices && ViewWidth < (int) Enums.Size.XLargeDevices)
             {
-                CurrentSizeState = Enums.Size.LargeDevices.ToString();
-
-                // Fill items
-                outstandingFeeds = tempList.Take(2).ToList();
-                feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                CurrentSizeState = Enums.Size.LargeDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
-                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+                outstandingFeeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 2;
+                });
+                feeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 1;
+                });
 
                 // Update the view
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
             }
             // XLargeDevices > 1200px
-            else if (CurrentSizeState != Enums.Size.XLargeDevices.ToString()
-                && ViewWidth >= (int)Enums.Size.XLargeDevices)
+            else if (CurrentSizeState != Enums.Size.XLargeDevices && ViewWidth >= (int) Enums.Size.XLargeDevices)
             {
-                CurrentSizeState = Enums.Size.XLargeDevices.ToString();
-
-                // Fill items
-                outstandingFeeds = tempList.Take(3).ToList();
-                feeds = tempList.Skip(3).TakeWhile(x => true).ToList();
+                CurrentSizeState = Enums.Size.XLargeDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 2; });
-                feeds.ForEach(x => { x.RowSpan = 1; x.ColSpan = 1; });
+                outstandingFeeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 2;
+                });
+                feeds.ForEach(x =>
+                {
+                    x.RowSpan = 1;
+                    x.ColSpan = 1;
+                });
 
+                // Update the view
+                OnPropertyChanged(nameof(OutstandingFeeds));
+                OnPropertyChanged(nameof(Feeds));
+            }
+            else
+            {
                 // Update the view
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
