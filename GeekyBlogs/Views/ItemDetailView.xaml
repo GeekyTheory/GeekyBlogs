@@ -45,6 +45,8 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
+        <!--<WebView Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                 extensions:WebViewExtension.Navigate="{Binding Feed.Link}" />-->
         <WebView Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                  extensions:WebViewExtension.Html="{Binding Feed.Content}" />
     </Grid>

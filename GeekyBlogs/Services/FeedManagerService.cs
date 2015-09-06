@@ -96,38 +96,14 @@ namespace GeekyBlogs.Services
             HtmlWeb web = new HtmlWeb();
             var document = await web.LoadFromWebAsync(url);
 
-            document.DocumentNode.Descendants().Where(x => x.Id == "fb-root").ToList().ForEach(x => x.Remove());
-            document.DocumentNode.Descendants().Where(x => x.Id == "header").ToList().ForEach(x => x.Remove());
-            document.DocumentNode
+            var test = document.DocumentNode
                 .Descendants(
                     "div")
                 .FirstOrDefault(
                     d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("section-head")).Remove();
-            document.DocumentNode
-                .Descendants(
-                    "div")
-                .FirstOrDefault(
-                    d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("container inner"))
-                .Descendants("div").First().Remove();
-            document.DocumentNode
-                .Descendants(
-                    "div")
-                .FirstOrDefault(
-                    d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("meta"))?.Remove();
-            document.DocumentNode
-                .Descendants(
-                    "div")
-                .FirstOrDefault(
-                    d =>
-                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("ssba"))?.Remove();
-            document.DocumentNode.Descendants().Where(x => x.Id == "jp-relatedposts").ToList().ForEach(x => x?.Remove());
-            document.DocumentNode.Descendants("aside").ToList().ForEach(x => x.Remove());
-            document.DocumentNode.Descendants("footer").ToList().ForEach(x => x.Remove());
+                        d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("content-wrapper"));
 
-            // Modify some elements
+            document.DocumentNode.Descendants("body").ToList()[0].InnerHtml = test.OuterHtml;
 
             return document.DocumentNode.OuterHtml;
         }
