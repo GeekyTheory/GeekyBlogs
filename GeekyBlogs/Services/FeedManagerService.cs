@@ -165,6 +165,7 @@ namespace GeekyBlogs.Services
             }
 
             feedItem.ImageUrl = GeekyHelper.ExtractFirstImageFromHtml(feedItem.Content);
+            feedItem.Content = string.Empty;
 
             if (item.Links.Count > 0)
             {

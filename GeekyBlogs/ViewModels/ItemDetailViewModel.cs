@@ -29,7 +29,8 @@ namespace GeekyBlogs.ViewModels
             {
                 IsBusy = true;
                 feed = (FeedItem) e.Parameter;
-                feed.Content = await feedManagerService.RemoveUnusedElementsAsync(Feed.Link.ToString());
+                if (string.IsNullOrEmpty(feed.Content))
+                    feed.Content = await feedManagerService.RemoveUnusedElementsAsync(Feed.Link.ToString());
                 OnPropertyChanged(nameof(Feed));
                 IsBusy = false;
             }

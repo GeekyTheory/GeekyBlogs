@@ -117,8 +117,8 @@ namespace GeekyBlogs.ViewModels
                 if (feed == value) return;
                 feed = value;
                 OnPropertyChanged();
-                AppFrame.Navigate(typeof(ItemDetailView), Feed);
-                feed = null;
+                if (Feed != null)
+                    AppFrame.Navigate(typeof (ItemDetailView), Feed);
             }
         }
 

@@ -54,6 +54,7 @@
                                         Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                         Background="{StaticResource Gray300}"
                                         ItemsSource="{Binding Feeds}"
+                                        SelectionChanged="VariableGridView_OnSelectionChanged"
                                         SelectedItem="{Binding Feed, Mode=TwoWay}"
                                         ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
             <GridView.ItemContainerStyle>

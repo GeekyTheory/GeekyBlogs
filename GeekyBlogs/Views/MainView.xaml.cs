@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.ViewModels;
 using GeekyTool;
 
@@ -19,6 +20,10 @@ namespace GeekyBlogs.Views
 
             this.SizeChanged += ((MainViewModel)this.DataContext).AppView_SizeChanged;
         }
-            
+
+        private void VariableGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VariableGridView.SelectedIndex = -1;
+        }
     }
 }
