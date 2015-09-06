@@ -18,7 +18,6 @@
                         <AdaptiveTrigger MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeDevices">
@@ -26,7 +25,6 @@
                         <AdaptiveTrigger MinWindowWidth="992" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumDevices">
@@ -34,7 +32,6 @@
                         <AdaptiveTrigger MinWindowWidth="768" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallDevices">
@@ -42,7 +39,6 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -92,7 +88,7 @@
                                                 ItemsSource="{Binding Feeds}"
                                                 SelectionChanged="VariableGridView_OnSelectionChanged"
                                                 SelectedItem="{Binding Feed, Mode=TwoWay}"
-                                                ItemTemplate="{StaticResource StarFeedItemDataTemplate}">
+                                                ItemTemplate="{StaticResource NormalFeedItemDataTemplate}">
                     <GridView.ItemContainerStyle>
                         <Style TargetType="GridViewItem">
                             <Setter Property="HorizontalContentAlignment"
@@ -110,8 +106,12 @@
                                 ItemWidth="{Binding VariableSizedGrid_Width}" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                </geekyControls:VariableGridView></Grid>
+                </geekyControls:VariableGridView>
+            </Grid>
 
         </ScrollViewer>
+
+        
+
     </Grid>
 </geekyTool:PageBase>

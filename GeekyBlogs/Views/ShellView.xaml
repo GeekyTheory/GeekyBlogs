@@ -21,7 +21,7 @@
                         <AdaptiveTrigger MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                        <Setter Target="Splitter.DisplayMode" Value="CompactOverlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeDevices">
@@ -29,7 +29,7 @@
                         <AdaptiveTrigger MinWindowWidth="992" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="Splitter.DisplayMode" Value="CompactInline" />
+                        <Setter Target="Splitter.DisplayMode" Value="CompactOverlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumDevices">
@@ -52,7 +52,7 @@
         </VisualStateManager.VisualStateGroups>
         <SplitView x:Name="Splitter"
                    CompactPaneLength="48"
-                   OpenPaneLength="170"
+                   OpenPaneLength="240"
                    DisplayMode="CompactOverlay"
                    Background="White"
                    PaneBackground="{Binding MenuItem.Brush}"

@@ -36,7 +36,7 @@ namespace GeekyBlogs.ViewModels
             OutstandingFeeds = new List<FeedItem>();
             Feeds = new List<FeedItem>();
 
-            VariableSizedGrid_Height = 240;
+            VariableSizedGrid_Height = 300;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
