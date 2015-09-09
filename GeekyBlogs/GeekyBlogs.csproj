@@ -101,6 +101,9 @@
     </Compile>
     <Compile Include="Common\ApiHelper.cs" />
     <Compile Include="Common\CommonSettings.cs" />
+    <Compile Include="Controls\AdaptiveSuggestBox.xaml.cs">
+      <DependentUpon>AdaptiveSuggestBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Models\FeedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AdaptiveSuggestBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\GridViewStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,7 +188,7 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GeekyTool\GeekyTool\GeekyTool.csproj">
+    <ProjectReference Include="..\..\GeekyTool\GeekyTool\GeekyTool.csproj">
       <Project>{50b0c666-6c62-4b70-b039-a917231e964c}</Project>
       <Name>GeekyTool</Name>
     </ProjectReference>

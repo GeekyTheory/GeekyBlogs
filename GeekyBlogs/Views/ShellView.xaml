@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:geekyTool="using:GeekyTool"
+    xmlns:controls="using:GeekyBlogs.Controls"
     xmlns:helpers="using:GeekyTool.Helpers"
     DataContext="{Binding ShellViewModel, Source={StaticResource Locator}}"
     helpers:TitleBar.BackgroundColor="{Binding MenuItem.Brush, Converter={StaticResource StringToColorConverter}}"
@@ -46,6 +47,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="Overlay" />
+                        <Setter Target="searchBoxStackPanel.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -94,6 +96,9 @@
                     </Border>
                 </ToggleButton.Content>
             </ToggleButton>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <controls:AdaptiveSuggestBox Width="256"></controls:AdaptiveSuggestBox>
+            </StackPanel>
         </Grid>
     </Grid>
 </geekyTool:PageBase>
