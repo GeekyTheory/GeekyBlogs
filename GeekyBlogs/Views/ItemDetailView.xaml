@@ -33,6 +33,7 @@
                         <AdaptiveTrigger MinWindowWidth="768" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="webView.Margin" Value="9,0,9,0"></Setter>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallDevices">
@@ -45,8 +46,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
-        <WebView Margin="90,0,90,9" Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
-                 extensions:WebViewExtension.Html="{Binding Feed.Content}"
-                 NavigationCompleted="WebView_OnNavigationCompleted"  x:Name="webView"/>
+        <WebView  Margin="90,0,90,0" Visibility="{Binding IsBusy, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                 extensions:WebViewExtension.Html="{Binding Feed.Content}" x:Name="webView"/>
     </Grid>
 </geekyTool:PageBase>
