@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekyBlogs", "GeekyBlogs\GeekyBlogs.csproj", "{4C1516E2-B377-45D2-8A8B-FA9D3D7331E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekyTool", "GeekyTool\GeekyTool\GeekyTool.csproj", "{50B0C666-6C62-4B70-B039-A917231E964C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekyTool", "..\GeekyTool\GeekyTool\GeekyTool.csproj", "{50B0C666-6C62-4B70-B039-A917231E964C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
