@@ -55,7 +55,7 @@
                    OpenPaneLength="240"
                    DisplayMode="CompactOverlay"
                    Background="White"
-                   PaneBackground="{Binding MenuItem.Brush}"
+                   PaneBackground="{StaticResource Gray900}"
                    IsPaneOpen="{Binding IsPaneOpen}">
             <SplitView.Pane>
                 <RelativePanel>
