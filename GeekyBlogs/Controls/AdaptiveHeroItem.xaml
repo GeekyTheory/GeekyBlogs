@@ -1,0 +1,91 @@
+﻿<UserControl
+    x:Class="GeekyBlogs.Controls.AdaptiveHeroItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GeekyBlogs.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid x:Name="heroFeed" MinHeight="200">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="XLargeDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="heroFeed.MinHeight" Value="250"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LargeDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="992" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="heroFeed.MinHeight" Value="275"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="768" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="heroFeed.MinHeight" Value="300"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallDevices">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="heroFeed.MinHeight" Value="400"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.Above)" Value="heroFeedContentPanel"/>
+                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
+                        <Setter Target="heroFeedShareButton.Margin" Value="4"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="{Binding ImageUrl}" Stretch="UniformToFill" />
+        </Grid.Background>
+
+        <Border Background="Black" Opacity=".35" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+        <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel x:Name="heroFeedContentPanel" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Margin="12">
+                <TextBlock Text="{Binding Author}"
+                                   HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
+
+                <Rectangle Width="128" Height="4" Margin="0,8,0,0"
+                                   Fill="White" HorizontalAlignment="Left" />
+
+                <TextBlock Margin="0,12,0,0" Text="{Binding Title}" FontFamily="Segoe UI Black" 
+                                   FontWeight="Bold" FontSize="29.333" Foreground="White"
+                                   HorizontalAlignment="Left" TextWrapping="WrapWholeWords"/>
+
+            </StackPanel>
+            <Button x:Name="heroFeedShareButton" Style="{StaticResource TextBlockButtonStyle}" Foreground="White">
+                <Button.Content>
+                    <Border Background="Transparent" Width="28" Height="28">
+                        <FontIcon Glyph="" />
+                    </Border>
+                </Button.Content>
+            </Button>
+        </RelativePanel>
+
+    </Grid>
+</UserControl>

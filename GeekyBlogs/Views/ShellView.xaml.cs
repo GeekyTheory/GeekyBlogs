@@ -1,5 +1,6 @@
 ﻿using GeekyBlogs.ViewModels;
 using GeekyTool;
+using Windows.ApplicationModel.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,6 +18,7 @@ namespace GeekyBlogs.Views
             base.SplitViewFrame = SplitViewFrame;
 
             this.SizeChanged += ((ShellViewModel)this.DataContext).AppView_SizeChanged;
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
         }
         
     }

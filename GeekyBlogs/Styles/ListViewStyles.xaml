@@ -25,6 +25,8 @@
 				Grid.Column="1"
 				Text="{Binding Title}"
 				Foreground="White"
+                FontFamily="Segoe Semilight"
+                FontSize="20"
 				VerticalAlignment="Center"
 				Margin="8, 0" />
         </Grid>

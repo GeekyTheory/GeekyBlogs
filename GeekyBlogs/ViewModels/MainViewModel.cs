@@ -23,7 +23,7 @@ namespace GeekyBlogs.ViewModels
         private readonly ISplitterMenuService splitterMenuService;
 
         private List<FeedItem> allFeeds;
-        private List<FeedItem> outstandingFeeds;
+        private ObservableCollection<FeedItem> outstandingFeeds;
         private List<FeedItem> feeds;
         private FeedItem feed;
         private Enums.Size currentSizeState;
@@ -36,7 +36,7 @@ namespace GeekyBlogs.ViewModels
             this.splitterMenuService = splitterMenuService;
 
             AllFeeds = new List<FeedItem>();
-            OutstandingFeeds = new List<FeedItem>();
+            OutstandingFeeds = new ObservableCollection<FeedItem>();
             Feeds = new List<FeedItem>();
 
             VariableSizedGrid_Height = 300;
@@ -94,28 +94,37 @@ namespace GeekyBlogs.ViewModels
                     }
                     tempList.Sort((a, b) => b.PubDate.CompareTo(a.PubDate));
 
-                    // Fill items
-                    switch (CurrentSizeState)
+                    var outstandings = tempList.Take(3).ToList();
+                    OutstandingFeeds.Clear();
+                    foreach (var feed in outstandings)
                     {
-                        case Enums.Size.SmallDevices:
-                            outstandingFeeds = tempList.Take(1).ToList();
-                            feeds = tempList.Skip(1).TakeWhile(x => true).ToList();
-                            break;
-                        case Enums.Size.MediumDevices:
-                            outstandingFeeds = tempList.Take(2).ToList();
-                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
-                            break;
-                        case Enums.Size.LargeDevices:
-                            outstandingFeeds = tempList.Take(2).ToList();
-                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
-                            break;
-                        case Enums.Size.XLargeDevices:
-                            outstandingFeeds = tempList.Take(2).ToList();
-                            feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        OutstandingFeeds.Add(feed);
                     }
+
+                    feeds = tempList.Skip(3).TakeWhile(x => true).ToList();
+
+                    // Fill items
+                    //switch (CurrentSizeState)
+                    //{
+                    //    case Enums.Size.SmallDevices:
+                    //        OutstandingFeeds = tempList.Take(2).ToList();
+                    //        Feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                    //        break;
+                    //    case Enums.Size.MediumDevices:
+                    //        OutstandingFeeds = tempList.Take(2).ToList();
+                    //        Feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                    //        break;
+                    //    case Enums.Size.LargeDevices:
+                    //        OutstandingFeeds = tempList.Take(2).ToList();
+                    //        Feeds = tempList.Skip(2).TakeWhile(x => true).ToList();
+                    //        break;
+                    //    case Enums.Size.XLargeDevices:
+                    //        OutstandingFeeds = tempList.Take(3).ToList();
+                    //        Feeds = tempList.Skip(3).TakeWhile(x => true).ToList();
+                    //        break;
+                    //    default:
+                    //        throw new ArgumentOutOfRangeException();
+                    //}
                     CurrentSizeState = Enums.Size.None;
                     PrepareAllFeedItemsForDisplay();
                     IsBusy = false;
@@ -141,7 +150,7 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-        public List<FeedItem> OutstandingFeeds
+        public ObservableCollection<FeedItem> OutstandingFeeds
         {
             get { return outstandingFeeds; }
             set
@@ -205,20 +214,20 @@ namespace GeekyBlogs.ViewModels
             {
                 CurrentSizeState = Enums.Size.SmallDevices;
 
-                if (outstandingFeeds.Count > 1)
-                {
-                    var tempList = outstandingFeeds.Skip(1).TakeWhile(x => true).ToList();
-                    foreach (var item in tempList)
-                    {
-                        outstandingFeeds.Remove(item);
-                    }
-                    var test = feeds;
-                    test.AddRange(tempList);
-                    feeds = test;
-                }
+                //if (outstandingFeeds.Count > 1)
+                //{
+                //    var tempList = outstandingFeeds.Skip(1).TakeWhile(x => true).ToList();
+                //    foreach (var item in tempList)
+                //    {
+                //        outstandingFeeds.Remove(item);
+                //    }
+                //    var test = feeds;
+                //    test.AddRange(tempList);
+                //    feeds = test;
+                //}
 
                 // Set specific size,
-                outstandingFeeds.ForEach(x =>
+                outstandingFeeds.ToList().ForEach(x =>
                 {
                     x.RowSpan = 1;
                     x.ColSpan = 4;
@@ -239,7 +248,7 @@ namespace GeekyBlogs.ViewModels
                 CurrentSizeState = Enums.Size.MediumDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x =>
+                outstandingFeeds.ToList().ForEach(x =>
                 {
                     x.RowSpan = 1;
                     x.ColSpan = 2;
@@ -260,7 +269,7 @@ namespace GeekyBlogs.ViewModels
                 CurrentSizeState = Enums.Size.LargeDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x =>
+                outstandingFeeds.ToList().ForEach(x =>
                 {
                     x.RowSpan = 1;
                     x.ColSpan = 2;
@@ -281,7 +290,7 @@ namespace GeekyBlogs.ViewModels
                 CurrentSizeState = Enums.Size.XLargeDevices;
 
                 // Set specific size
-                outstandingFeeds.ForEach(x =>
+                outstandingFeeds.ToList().ForEach(x =>
                 {
                     x.RowSpan = 1;
                     x.ColSpan = 2;
