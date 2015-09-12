@@ -19,6 +19,7 @@
                  -->
                 <ResourceDictionary Source="Styles/ListViewStyles.xaml"/>
                 <ResourceDictionary Source="Styles/GridViewStyles.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Styles/CustomStyles.xaml"/>
                 <!--<ResourceDictionary Source="ms-appx:///GeekyTheory (UWP)/Colors.xaml"/>-->
                 <!--<ResourceDictionary Source="/GeekyTheory;GeekyTheory/Colors.xaml" />-->
             </ResourceDictionary.MergedDictionaries>

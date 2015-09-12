@@ -65,16 +65,16 @@
                    PaneBackground="{Binding MenuItem.Brush}"
                    IsPaneOpen="{Binding IsPaneOpen}">
             <SplitView.Pane>
-                <RelativePanel>
+                <StackPanel Margin="0,102,0,0" HorizontalAlignment="Stretch">
+                    <AutoSuggestBox Margin="12" HorizontalAlignment="Stretch" QueryIcon="Find" Style="{StaticResource SplitViewSearchBoxStyle}" />
                     <ListView x:Name="MenuItemList"
                         ItemsSource="{Binding MenuItems}"
                         SelectedItem="{Binding MenuItem, Mode=TwoWay}"
                         ItemTemplate="{StaticResource MenuItemDataTemplate}"
                         SelectionMode="Single"
-                        IsItemClickEnabled="False"
-                        Padding="0,72,0,0">
+                        IsItemClickEnabled="False">
                     </ListView>
-                </RelativePanel>
+                </StackPanel>
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid HorizontalAlignment="Stretch"
