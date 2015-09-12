@@ -67,8 +67,14 @@
 
         <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="heroFeedContentPanel" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Margin="12">
-                <TextBlock Text="{Binding Author}"
-                                   HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Author}"
+            			HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
+                    <Ellipse Fill="White" Height="3" Width="3" Margin="8,0"/>
+                    <TextBlock Text="{Binding PubDate, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter=dd/MM/yyyy}"
+                               HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
+                </StackPanel>
 
                 <Rectangle Width="128" Height="4" Margin="0,8,0,0"
                                    Fill="White" HorizontalAlignment="Left" />
