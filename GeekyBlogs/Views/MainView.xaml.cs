@@ -23,7 +23,7 @@ namespace GeekyBlogs.Views
 
         private void VariableGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            OutstandingVariableGridView.SelectedIndex = -1;
+            //OutstandingVariableGridView.SelectedIndex = -1;
             VariableGridView.SelectedIndex = -1;
         }
     }

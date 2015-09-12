@@ -7,42 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:geekyTool="using:GeekyTool"
     xmlns:geekyControls="using:GeekyTool.Controls"
+    xmlns:controls="using:GeekyBlogs.Controls"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Margin="0,38,0,0" Background="{StaticResource Gray300}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="XLargeDevices">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1200" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="LargeDevices">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="992" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="MediumDevices">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="768" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="SmallDevices">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+    <Grid Background="{StaticResource Gray300}">
+        
 
         <ProgressRing IsActive="{Binding IsBusy}" HorizontalAlignment="Center" VerticalAlignment="Center"></ProgressRing>
 
@@ -56,7 +26,17 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <geekyControls:VariableGridView x:Name="OutstandingVariableGridView"
+
+                <FlipView ItemsSource="{Binding OutstandingFeeds}" MaxHeight="400">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AdaptiveHeroItem />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+                
+                
+                <!--<geekyControls:VariableGridView x:Name="OutstandingVariableGridView"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Background="{StaticResource Gray300}"
                                                 ItemsSource="{Binding OutstandingFeeds}"
@@ -80,7 +60,7 @@
                                 ItemWidth="{Binding VariableSizedGrid_Width}" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                </geekyControls:VariableGridView>
+                </geekyControls:VariableGridView>-->
 
                 <geekyControls:VariableGridView Grid.Row="1" x:Name="VariableGridView"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"

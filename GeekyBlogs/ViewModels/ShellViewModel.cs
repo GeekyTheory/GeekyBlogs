@@ -8,6 +8,7 @@ using GeekyBlogs.Views;
 using GeekyTool.Commands;
 using GeekyTool.Models;
 using GeekyTool.ViewModels;
+using System;
 
 namespace GeekyBlogs.ViewModels
 {
@@ -26,7 +27,7 @@ namespace GeekyBlogs.ViewModels
             return null;
         }
 
-        public override Task OnNavigatedTo(NavigationEventArgs e)
+        public async override Task OnNavigatedTo(NavigationEventArgs e)
         {
             var items = new List<MenuItem>()
             {
@@ -64,7 +65,9 @@ namespace GeekyBlogs.ViewModels
             
             MenuItem = MenuItems.FirstOrDefault(x => x.View == typeof (MainView));
 
-            return Task.FromResult(true);
+            await HideStatusBarOnMobileAsync();
+
+            return;
         }
 
         public ICommand OpenPaneCommand { get; private set; }
@@ -87,6 +90,15 @@ namespace GeekyBlogs.ViewModels
                 }
             }
             SplitViewFrame.Navigate(item.View, item);
+        }
+
+        private async Task HideStatusBarOnMobileAsync()
+        {
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            {
+                var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+                await statusBar.HideAsync();
+            }
         }
     }
 }
