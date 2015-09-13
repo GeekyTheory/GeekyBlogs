@@ -85,7 +85,7 @@
                    DisplayMode="CompactOverlay"
                    Background="White"
                    PaneBackground="{Binding MenuItem.Brush}"
-                   IsPaneOpen="{Binding IsPaneOpen}">
+                   IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
             <SplitView.Pane>
                 <StackPanel x:Name="splitViewPanePanel" Margin="0,72,0,0" HorizontalAlignment="Stretch">
                     <AutoSuggestBox x:Name="largeDevicesSearchBox" Visibility="Collapsed" Margin="12" HorizontalAlignment="Stretch" QueryIcon="Find" Style="{StaticResource SplitViewSearchBoxStyle}" />
@@ -119,7 +119,8 @@
         </SplitView>
 
         <Grid Height="38" VerticalAlignment="Top" Margin="0,36,0,0">
-            <ToggleButton x:Name="toggleButtonSmallDevice" Background="Transparent" VerticalAlignment="Top" Command="{Binding OpenPaneCommand}" Foreground="White" Visibility="Collapsed">
+            <ToggleButton x:Name="toggleButtonSmallDevice" Background="Transparent" VerticalAlignment="Top" Command="{Binding OpenPaneCommand}"
+                          Foreground="White" Visibility="Collapsed">
                 <ToggleButton.Content>
                     <Border Background="Transparent" Width="28" Height="28">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"></FontIcon>
