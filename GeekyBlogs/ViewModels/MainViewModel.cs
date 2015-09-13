@@ -28,6 +28,9 @@ namespace GeekyBlogs.ViewModels
         private FeedItem feed;
         private Enums.Size currentSizeState;
 
+        private DispatcherTimer changeHeroFeedTimer;
+        private int outstandingFeedsSelectedIndex;
+
         private double variableSizedGrid_Height;
 
         public MainViewModel(IFeedManagerService feedManagerService, ISplitterMenuService splitterMenuService)
@@ -39,17 +42,26 @@ namespace GeekyBlogs.ViewModels
             OutstandingFeeds = new ObservableCollection<FeedItem>();
             Feeds = new List<FeedItem>();
 
+            changeHeroFeedTimer = new DispatcherTimer();
+
             VariableSizedGrid_Height = 300;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
         {
+            changeHeroFeedTimer.Stop();
+            changeHeroFeedTimer.Tick -= ChangeActiveHeroFeed;
             return null;
         }
 
         public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
             SetVisibilityOfNavigationBack();
+
+            outstandingFeedsSelectedIndex = 0;
+            changeHeroFeedTimer.Interval = TimeSpan.FromSeconds(5);
+            changeHeroFeedTimer.Tick += ChangeActiveHeroFeed;
+            changeHeroFeedTimer.Start();
 
             if (e.NavigationMode != NavigationMode.Back)
             {
@@ -132,6 +144,14 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
+        private void ChangeActiveHeroFeed(object sender, object e)
+        {
+            if (OutstandingFeedsSelectedIndex == 2)
+                OutstandingFeedsSelectedIndex = 0;
+            else
+                OutstandingFeedsSelectedIndex += 1;
+        }
+
         public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             base.AppView_SizeChanged(sender, e);
@@ -192,6 +212,17 @@ namespace GeekyBlogs.ViewModels
             {
                 if (currentSizeState == value) return;
                 currentSizeState = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int OutstandingFeedsSelectedIndex
+        {
+            get { return outstandingFeedsSelectedIndex; }
+            set
+            {
+                if (outstandingFeedsSelectedIndex == value) return;
+                outstandingFeedsSelectedIndex = value;
                 OnPropertyChanged();
             }
         }

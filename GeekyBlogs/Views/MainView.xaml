@@ -27,7 +27,7 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <FlipView ItemsSource="{Binding OutstandingFeeds}" MaxHeight="400">
+                <FlipView ItemsSource="{Binding OutstandingFeeds}" SelectedIndex="{Binding OutstandingFeedsSelectedIndex, Mode=TwoWay}" MaxHeight="400">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <controls:AdaptiveHeroItem />
