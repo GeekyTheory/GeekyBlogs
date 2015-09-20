@@ -204,7 +204,7 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GeekyTool\GeekyTool\GeekyTool.csproj">
+    <ProjectReference Include="..\GeekyTool\GeekyTool\GeekyTool.csproj">
       <Project>{50b0c666-6c62-4b70-b039-a917231e964c}</Project>
       <Name>GeekyTool</Name>
     </ProjectReference>

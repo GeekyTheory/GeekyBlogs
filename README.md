@@ -38,4 +38,4 @@ Está desarrollado por [Dachi Gogotchuri][1] y sus tutoriales, articulos y notic
 
 
 [1]: https://github.com/dachibox
-[2]: http://www.geekytheory.com
+[2]: https://geekytheory.com/author/Dachi.Gogotchuri/
