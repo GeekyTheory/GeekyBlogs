@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using GeekyBlogs.Models;
 using GeekyBlogs.ViewModels;
 using GeekyTool;
 
@@ -24,7 +26,13 @@ namespace GeekyBlogs.Views
         private void VariableGridView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //OutstandingVariableGridView.SelectedIndex = -1;
-            VariableGridView.SelectedIndex = -1;
+            //VariableGridView.SelectedIndex = -1;
+        }
+
+        private void HeroFlipItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var ctx = (MainViewModel) this.DataContext;
+            ctx.Feed = (FeedItem) (sender as FlipView).SelectedItem;
         }
     }
 }

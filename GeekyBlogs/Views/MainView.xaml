@@ -8,6 +8,8 @@
     xmlns:geekyTool="using:GeekyTool"
     xmlns:geekyControls="using:GeekyTool.Controls"
     xmlns:controls="using:GeekyBlogs.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
@@ -27,14 +29,24 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <FlipView ItemsSource="{Binding OutstandingFeeds}" SelectedIndex="{Binding OutstandingFeedsSelectedIndex, Mode=TwoWay}" MaxHeight="400">
+                <FlipView x:Name="HeroFlipView" ItemsSource="{Binding OutstandingFeeds}"
+                          SelectedIndex="{Binding OutstandingFeedsSelectedIndex, Mode=TwoWay}"
+                          Tapped="HeroFlipItem_Tapped"
+                          MaxHeight="400">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
-                            <controls:AdaptiveHeroItem />
+                            <controls:AdaptiveHeroItem/>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
+                    
+                    <interactivity:Interaction.Behaviors>
+                        <interactivity:BehaviorCollection>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding ChangeFeedCommand}" CommandParameter="{Binding ElementName=HeroFlipView, Path=SelectedItem}"/>
+                            </core:EventTriggerBehavior>
+                        </interactivity:BehaviorCollection>
+                    </interactivity:Interaction.Behaviors>
                 </FlipView>
-                
                 
                 <!--<geekyControls:VariableGridView x:Name="OutstandingVariableGridView"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"

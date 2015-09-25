@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
@@ -14,6 +15,8 @@ using GeekyTool.Models;
 using GeekyTool.Services;
 using GeekyTool.Services.SplitterMenuService;
 using GeekyTool.ViewModels;
+using Windows.UI.Core;
+using GeekyTool.Commands;
 
 namespace GeekyBlogs.ViewModels
 {
@@ -28,15 +31,18 @@ namespace GeekyBlogs.ViewModels
         private FeedItem feed;
         private Enums.Size currentSizeState;
 
-        private DispatcherTimer changeHeroFeedTimer;
+        private readonly DispatcherTimer changeHeroFeedTimer;
         private int outstandingFeedsSelectedIndex;
 
         private double variableSizedGrid_Height;
+
+
 
         public MainViewModel(IFeedManagerService feedManagerService, ISplitterMenuService splitterMenuService)
         {
             this.feedManagerService = feedManagerService;
             this.splitterMenuService = splitterMenuService;
+            ChangeFeedCommand = new DelegateCommand<FeedItem>(ChangeFeedCommandDelegate, null);
 
             AllFeeds = new List<FeedItem>();
             OutstandingFeeds = new ObservableCollection<FeedItem>();
@@ -46,6 +52,7 @@ namespace GeekyBlogs.ViewModels
 
             VariableSizedGrid_Height = 300;
         }
+
 
         public override Task OnNavigatedFrom(NavigationEventArgs e)
         {
@@ -144,20 +151,7 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-        private void ChangeActiveHeroFeed(object sender, object e)
-        {
-            if (OutstandingFeedsSelectedIndex == 2)
-                OutstandingFeedsSelectedIndex = 0;
-            else
-                OutstandingFeedsSelectedIndex += 1;
-        }
-
-        public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            base.AppView_SizeChanged(sender, e);
-
-            PrepareAllFeedItemsForDisplay();
-        }
+        
 
         public List<FeedItem> AllFeeds
         {
@@ -236,6 +230,23 @@ namespace GeekyBlogs.ViewModels
                 variableSizedGrid_Height = value;
                 OnPropertyChanged();
             }
+        }
+
+
+
+        public ICommand ChangeFeedCommand { get; private set; }
+
+        public void ChangeFeedCommandDelegate(FeedItem item)
+        {
+            Feed = item;
+        }
+
+
+        public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            base.AppView_SizeChanged(sender, e);
+
+            PrepareAllFeedItemsForDisplay();
         }
 
         private void PrepareAllFeedItemsForDisplay()
@@ -342,6 +353,14 @@ namespace GeekyBlogs.ViewModels
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
             }
+        }
+
+        private void ChangeActiveHeroFeed(object sender, object e)
+        {
+            if (OutstandingFeedsSelectedIndex == 2)
+                OutstandingFeedsSelectedIndex = 0;
+            else
+                OutstandingFeedsSelectedIndex += 1;
         }
     }
 }

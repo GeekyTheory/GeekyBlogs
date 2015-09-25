@@ -10,7 +10,7 @@
     DataContext="{Binding ShellViewModel, Source={StaticResource Locator}}"
     helpers:TitleBar.ForegroundColor="#757575"
     helpers:TitleBar.ButtonBackgroundColor="Transparent"
-    helpers:TitleBar.ButtonForegroundColor="#757575"
+    helpers:TitleBar.ButtonForegroundColor="#616161"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
