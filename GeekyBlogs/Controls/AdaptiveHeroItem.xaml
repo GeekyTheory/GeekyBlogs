@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="heroFeed" MinHeight="200">
+    <Grid x:Name="HeroFeed" MinHeight="200">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="XLargeDevices">
@@ -17,10 +17,10 @@
                         <AdaptiveTrigger MinWindowWidth="1200" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="heroFeed.MinHeight" Value="250"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
-                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                        <Setter Target="HeroFeed.MinHeight" Value="250"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="HeroFeedShareButton.Margin" Value="12"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeDevices">
@@ -28,10 +28,10 @@
                         <AdaptiveTrigger MinWindowWidth="992" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="heroFeed.MinHeight" Value="275"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
-                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                        <Setter Target="HeroFeed.MinHeight" Value="275"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="HeroFeedShareButton.Margin" Value="12"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumDevices">
@@ -39,10 +39,10 @@
                         <AdaptiveTrigger MinWindowWidth="768" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="heroFeed.MinHeight" Value="300"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
-                        <Setter Target="heroFeedShareButton.Margin" Value="12"/>
+                        <Setter Target="HeroFeed.MinHeight" Value="300"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignRightWithPanel)" Value="True"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="HeroFeedShareButton.Margin" Value="12"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallDevices">
@@ -50,10 +50,10 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="heroFeed.MinHeight" Value="400"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.Above)" Value="heroFeedContentPanel"/>
-                        <Setter Target="heroFeedShareButton.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
-                        <Setter Target="heroFeedShareButton.Margin" Value="4"/>
+                        <Setter Target="HeroFeed.MinHeight" Value="400"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.Above)" Value="HeroFeedContentPanel"/>
+                        <Setter Target="HeroFeedShareButton.(RelativePanel.AlignLeftWithPanel)" Value="True"/>
+                        <Setter Target="HeroFeedShareButton.Margin" Value="4"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -66,13 +66,13 @@
         <Border Background="Black" Opacity=".35" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
         <RelativePanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <StackPanel x:Name="heroFeedContentPanel" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Margin="12">
+            <StackPanel x:Name="HeroFeedContentPanel" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Margin="12">
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Author}"
             			HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
                     <Ellipse Fill="White" Height="3" Width="3" Margin="8,0"/>
-                    <TextBlock Text="{Binding PubDate, Converter={StaticResource DateTimeToStringConverter}, ConverterParameter=dd/MM/yyyy}"
+                    <TextBlock Text="{Binding PubDateShow}"
                                HorizontalAlignment="Left" Foreground="White" FontFamily="Segoe UI Semilight" FontSize="12" />
                 </StackPanel>
 
@@ -84,7 +84,7 @@
                                    HorizontalAlignment="Left" TextWrapping="WrapWholeWords"/>
 
             </StackPanel>
-            <Button x:Name="heroFeedShareButton" Style="{StaticResource TextBlockButtonStyle}" Foreground="White">
+            <Button x:Name="HeroFeedShareButton" Style="{StaticResource TextBlockButtonStyle}" Foreground="White">
                 <Button.Content>
                     <Border Background="Transparent" Width="28" Height="28">
                         <FontIcon Glyph="" />
