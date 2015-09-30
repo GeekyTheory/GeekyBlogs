@@ -97,6 +97,12 @@
                         ItemTemplate="{StaticResource MenuItemDataTemplate}"
                         SelectionMode="Single"
                         IsItemClickEnabled="False">
+                        <ListView.ItemContainerTransitions>
+                            <TransitionCollection>
+                                <EntranceThemeTransition FromHorizontalOffset="-70" FromVerticalOffset="0"/>
+                                <ContentThemeTransition/>
+                            </TransitionCollection>
+                        </ListView.ItemContainerTransitions>
                     </ListView>
                 </StackPanel>
             </SplitView.Pane>

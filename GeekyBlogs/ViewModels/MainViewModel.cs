@@ -43,6 +43,7 @@ namespace GeekyBlogs.ViewModels
             this.feedManagerService = feedManagerService;
             this.splitterMenuService = splitterMenuService;
             ChangeFeedCommand = new DelegateCommand<FeedItem>(ChangeFeedCommandDelegate, null);
+            NavigateToItemDetailCommand = new DelegateCommand<object>(NavigateToItemDetailCommandDelegate, null);
 
             AllFeeds = new List<FeedItem>();
             OutstandingFeeds = new ObservableCollection<FeedItem>();
@@ -233,6 +234,12 @@ namespace GeekyBlogs.ViewModels
         }
 
 
+        public ICommand NavigateToItemDetailCommand { get; private set; }
+
+        private void NavigateToItemDetailCommandDelegate(object feedItem)
+        {
+            AppFrame.Navigate(typeof (ItemDetailView), (FeedItem) feedItem);
+        }
 
         public ICommand ChangeFeedCommand { get; private set; }
 

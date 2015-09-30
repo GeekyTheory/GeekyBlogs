@@ -101,7 +101,8 @@
                 </geekyControls:VariableGridView>-->
                 <was:ResponsiveGridView Grid.Row="1" ItemsSource="{Binding Feeds}"
                                         ItemHeight="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                        DesiredWidth="300" ItemTemplate="{StaticResource NormalFeedItemDataTemplate}">
+                                        DesiredWidth="300" ItemTemplate="{StaticResource NormalFeedItemDataTemplate}"
+                                        ItemClickCommand="{Binding NavigateToItemDetailCommand}">
                 </was:ResponsiveGridView>
             </Grid>
 
