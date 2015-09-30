@@ -10,6 +10,7 @@
     xmlns:controls="using:GeekyBlogs.Controls"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:was="using:AppStudio.Uwp.Controls"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
@@ -31,7 +32,6 @@
 
                 <FlipView x:Name="HeroFlipView" ItemsSource="{Binding OutstandingFeeds}"
                           SelectedIndex="{Binding OutstandingFeedsSelectedIndex, Mode=TwoWay}"
-                          Tapped="HeroFlipItem_Tapped"
                           MaxHeight="400">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
@@ -74,13 +74,13 @@
                     </GridView.ItemsPanel>
                 </geekyControls:VariableGridView>-->
 
-                <geekyControls:VariableGridView Grid.Row="1" x:Name="VariableGridView"
+                <!--<geekyControls:VariableGridView Grid.Row="1" x:Name="VariableGridView"
                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                 Background="{StaticResource Gray300}"
                                                 ItemsSource="{Binding Feeds}"
                                                 SelectionChanged="VariableGridView_OnSelectionChanged"
                                                 SelectedItem="{Binding Feed, Mode=TwoWay}"
-                                                ItemTemplate="{StaticResource NormalFeedItemDataTemplate}">
+                                                ItemTemplate="c">
                     <GridView.ItemContainerStyle>
                         <Style TargetType="GridViewItem">
                             <Setter Property="HorizontalContentAlignment"
@@ -98,7 +98,11 @@
                                 ItemWidth="{Binding VariableSizedGrid_Width}" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                </geekyControls:VariableGridView>
+                </geekyControls:VariableGridView>-->
+                <was:ResponsiveGridView Grid.Row="1" ItemsSource="{Binding Feeds}"
+                                        ItemHeight="300" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        DesiredWidth="300" ItemTemplate="{StaticResource NormalFeedItemDataTemplate}">
+                </was:ResponsiveGridView>
             </Grid>
 
         </ScrollViewer>

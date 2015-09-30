@@ -28,11 +28,5 @@ namespace GeekyBlogs.Views
             //OutstandingVariableGridView.SelectedIndex = -1;
             //VariableGridView.SelectedIndex = -1;
         }
-
-        private void HeroFlipItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var ctx = (MainViewModel) this.DataContext;
-            ctx.Feed = (FeedItem) (sender as FlipView).SelectedItem;
-        }
     }
 }
