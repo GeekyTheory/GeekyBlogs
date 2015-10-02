@@ -10,7 +10,7 @@
     DataContext="{Binding ShellViewModel, Source={StaticResource Locator}}"
     helpers:TitleBar.ForegroundColor="#757575"
     helpers:TitleBar.ButtonBackgroundColor="Transparent"
-    helpers:TitleBar.ButtonForegroundColor="#757575"
+    helpers:TitleBar.ButtonForegroundColor="#616161"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -24,6 +24,12 @@
                         <Setter Target="Splitter.DisplayMode" Value="CompactOverlay" />
                         <Setter Target="Splitter.(SplitView.CompactPaneLength)" Value="240"/>
                         <Setter Target="toggleButton.(UIElement.Visibility)" Value="Collapsed"/>
+                        <Setter Target="splitViewPanePanel.(FrameworkElement.Margin)">
+                            <Setter.Value>
+                                <Thickness>0,36,0,0</Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Target="largeDevicesSearchBox.(UIElement.Visibility)" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="LargeDevices">
@@ -34,6 +40,12 @@
                         <Setter Target="Splitter.DisplayMode" Value="CompactOverlay" />
                         <Setter Target="toggleButton.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="Splitter.(SplitView.CompactPaneLength)" Value="240"/>
+                        <Setter Target="splitViewPanePanel.(FrameworkElement.Margin)">
+                            <Setter.Value>
+                                <Thickness>0,36,0,0</Thickness>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Target="largeDevicesSearchBox.(UIElement.Visibility)" Value="Visible"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumDevices">
@@ -42,6 +54,11 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="Splitter.DisplayMode" Value="CompactOverlay" />
+                        <Setter Target="splitViewPanePanel.(FrameworkElement.Margin)">
+                            <Setter.Value>
+                                <Thickness>0,72,0,0</Thickness>
+                            </Setter.Value>
+                        </Setter>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallDevices">
@@ -52,6 +69,11 @@
                         <Setter Target="Splitter.DisplayMode" Value="Overlay" />
                         <Setter Target="toggleButton.Visibility" Value="Collapsed" />
                         <Setter Target="toggleButtonSmallDevice.Visibility" Value="Visible" />
+                        <Setter Target="splitViewPanePanel.(FrameworkElement.Margin)">
+                            <Setter.Value>
+                                <Thickness>0,72,0,0</Thickness>
+                            </Setter.Value>
+                        </Setter>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -63,16 +85,24 @@
                    DisplayMode="CompactOverlay"
                    Background="White"
                    PaneBackground="{Binding MenuItem.Brush}"
-                   IsPaneOpen="{Binding IsPaneOpen}">
+                   IsPaneOpen="{Binding IsPaneOpen, Mode=TwoWay}">
             <SplitView.Pane>
-                <StackPanel Margin="0,102,0,0" HorizontalAlignment="Stretch">
-                    <AutoSuggestBox Margin="12" HorizontalAlignment="Stretch" QueryIcon="Find" Style="{StaticResource SplitViewSearchBoxStyle}" />
+                <StackPanel x:Name="splitViewPanePanel" Margin="0,72,0,0" HorizontalAlignment="Stretch">
+                    <AutoSuggestBox x:Name="largeDevicesSearchBox" Visibility="Collapsed" Margin="12" HorizontalAlignment="Stretch" QueryIcon="Find" Style="{StaticResource SplitViewSearchBoxStyle}" />
+                    <AutoSuggestBox Margin="12" HorizontalAlignment="Stretch" QueryIcon="Find" Style="{StaticResource SplitViewSearchBoxStyle}"
+                                    Visibility="{Binding IsPaneOpen, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <ListView x:Name="MenuItemList"
                         ItemsSource="{Binding MenuItems}"
                         SelectedItem="{Binding MenuItem, Mode=TwoWay}"
                         ItemTemplate="{StaticResource MenuItemDataTemplate}"
                         SelectionMode="Single"
                         IsItemClickEnabled="False">
+                        <ListView.ItemContainerTransitions>
+                            <TransitionCollection>
+                                <EntranceThemeTransition FromHorizontalOffset="-70" FromVerticalOffset="0"/>
+                                <ContentThemeTransition/>
+                            </TransitionCollection>
+                        </ListView.ItemContainerTransitions>
                     </ListView>
                 </StackPanel>
             </SplitView.Pane>
@@ -95,7 +125,8 @@
         </SplitView>
 
         <Grid Height="38" VerticalAlignment="Top" Margin="0,36,0,0">
-            <ToggleButton x:Name="toggleButtonSmallDevice" Background="Transparent" VerticalAlignment="Top" Command="{Binding OpenPaneCommand}" Foreground="White" Visibility="Collapsed">
+            <ToggleButton x:Name="toggleButtonSmallDevice" Background="Transparent" VerticalAlignment="Top" Command="{Binding OpenPaneCommand}"
+                          Foreground="White" Visibility="Collapsed">
                 <ToggleButton.Content>
                     <Border Background="Transparent" Width="28" Height="28">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"></FontIcon>

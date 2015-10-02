@@ -103,6 +103,8 @@
     </Compile>
     <Compile Include="Common\ApiHelper.cs" />
     <Compile Include="Common\CommonSettings.cs" />
+    <Compile Include="Controls\AdaptiveGridView\ItemClickCommand.cs" />
+    <Compile Include="Controls\AdaptiveGridView\ResponsiveGridView.cs" />
     <Compile Include="Controls\AdaptiveHeroItem.xaml.cs">
       <DependentUpon>AdaptiveHeroItem.xaml</DependentUpon>
     </Compile>
@@ -159,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AdaptiveGridView\ResponsiveGridView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\AdaptiveHeroItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +187,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ItemDetailView.xaml">
       <SubType>Designer</SubType>

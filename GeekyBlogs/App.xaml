@@ -30,6 +30,7 @@
             <geekyConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></geekyConverters:BooleanToVisibilityConverter>
             <geekyConverters:BooleanToInverseVisibilityConverter x:Key="InverseBoolToVisibilityConverter"></geekyConverters:BooleanToInverseVisibilityConverter>
             <geekyConverters:ToUpperConverter x:Key="ToUpperConverter"></geekyConverters:ToUpperConverter>
+            <geekyConverters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"></geekyConverters:DateTimeToStringConverter>
 
             <SolidColorBrush x:Key="GeekyBackGround" Color="#F0F0F0"></SolidColorBrush>
             <SolidColorBrush x:Key="GeekyTheoryColor" Color="#1ABB9C"></SolidColorBrush>
