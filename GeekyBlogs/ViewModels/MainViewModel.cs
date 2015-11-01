@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using GeekyBlogs.Models;
@@ -14,6 +15,8 @@ using GeekyTool.Models;
 using GeekyTool.Services;
 using GeekyTool.Services.SplitterMenuService;
 using GeekyTool.ViewModels;
+using Windows.UI.Core;
+using GeekyTool.Commands;
 
 namespace GeekyBlogs.ViewModels
 {
@@ -28,28 +31,45 @@ namespace GeekyBlogs.ViewModels
         private FeedItem feed;
         private Enums.Size currentSizeState;
 
+        private readonly DispatcherTimer changeHeroFeedTimer;
+        private int outstandingFeedsSelectedIndex;
+
         private double variableSizedGrid_Height;
+
+
 
         public MainViewModel(IFeedManagerService feedManagerService, ISplitterMenuService splitterMenuService)
         {
             this.feedManagerService = feedManagerService;
             this.splitterMenuService = splitterMenuService;
+            ChangeFeedCommand = new DelegateCommand<FeedItem>(ChangeFeedCommandDelegate, null);
+            NavigateToItemDetailCommand = new DelegateCommand<object>(NavigateToItemDetailCommandDelegate, null);
 
             AllFeeds = new List<FeedItem>();
             OutstandingFeeds = new ObservableCollection<FeedItem>();
             Feeds = new List<FeedItem>();
 
+            changeHeroFeedTimer = new DispatcherTimer();
+
             VariableSizedGrid_Height = 300;
         }
 
+
         public override Task OnNavigatedFrom(NavigationEventArgs e)
         {
+            changeHeroFeedTimer.Stop();
+            changeHeroFeedTimer.Tick -= ChangeActiveHeroFeed;
             return null;
         }
 
         public override async Task OnNavigatedTo(NavigationEventArgs e)
         {
             SetVisibilityOfNavigationBack();
+
+            outstandingFeedsSelectedIndex = 0;
+            changeHeroFeedTimer.Interval = TimeSpan.FromSeconds(5);
+            changeHeroFeedTimer.Tick += ChangeActiveHeroFeed;
+            changeHeroFeedTimer.Start();
 
             if (e.NavigationMode != NavigationMode.Back)
             {
@@ -132,12 +152,7 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
-        public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            base.AppView_SizeChanged(sender, e);
-
-            PrepareAllFeedItemsForDisplay();
-        }
+        
 
         public List<FeedItem> AllFeeds
         {
@@ -196,6 +211,17 @@ namespace GeekyBlogs.ViewModels
             }
         }
 
+        public int OutstandingFeedsSelectedIndex
+        {
+            get { return outstandingFeedsSelectedIndex; }
+            set
+            {
+                if (outstandingFeedsSelectedIndex == value) return;
+                outstandingFeedsSelectedIndex = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double VariableSizedGrid_Height
         {
             get { return variableSizedGrid_Height; }
@@ -205,6 +231,29 @@ namespace GeekyBlogs.ViewModels
                 variableSizedGrid_Height = value;
                 OnPropertyChanged();
             }
+        }
+
+
+        public ICommand NavigateToItemDetailCommand { get; private set; }
+
+        private void NavigateToItemDetailCommandDelegate(object feedItem)
+        {
+            AppFrame.Navigate(typeof (ItemDetailView), (FeedItem) feedItem);
+        }
+
+        public ICommand ChangeFeedCommand { get; private set; }
+
+        public void ChangeFeedCommandDelegate(FeedItem item)
+        {
+            Feed = item;
+        }
+
+
+        public override void AppView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            base.AppView_SizeChanged(sender, e);
+
+            PrepareAllFeedItemsForDisplay();
         }
 
         private void PrepareAllFeedItemsForDisplay()
@@ -311,6 +360,14 @@ namespace GeekyBlogs.ViewModels
                 OnPropertyChanged(nameof(OutstandingFeeds));
                 OnPropertyChanged(nameof(Feeds));
             }
+        }
+
+        private void ChangeActiveHeroFeed(object sender, object e)
+        {
+            if (OutstandingFeedsSelectedIndex == 2)
+                OutstandingFeedsSelectedIndex = 0;
+            else
+                OutstandingFeedsSelectedIndex += 1;
         }
     }
 }
